@@ -3,8 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { cn } from '@/lib/utils';
-import { Loader2, ShieldCheck, Clock } from 'lucide-react';
 
 export default function MfaVerifyPage() {
   const router = useRouter();
@@ -44,79 +42,83 @@ export default function MfaVerifyPage() {
     e.preventDefault();
     const fullCode = code.join('');
     if (fullCode.length !== 6) {
-      setError('Please enter a 6-digit code');
+      setError('INCOMPLETE TOKEN');
       return;
     }
 
     setLoading(true);
     setError(null);
 
-    // Normally you'd get the factorId from the initial signIn response
-    // This is simplified
-    const factorId = 'mfa-factor-id'; // placeholder
-    
     try {
-      /*
-      const { data, error: verifyError } = await supabase.auth.mfa.challengeAndVerify({
-        factorId,
-        code: fullCode
-      });
-      if (verifyError) throw verifyError;
-      */
-      
       // Simulation for now
       await new Promise(resolve => setTimeout(resolve, 1000));
-      if (fullCode === '000000') throw new Error('Invalid code');
+      if (fullCode === '000000') throw new Error('INVALID TOKEN SIGNATURE');
       
       router.push('/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Verification failed');
+      setError(err.message || 'VERIFICATION FAILED');
       setLoading(false);
-      // Reset code on error
       setCode(['', '', '', '', '', '']);
       inputRefs.current[0]?.focus();
     }
   };
 
   return (
-    <div className="w-full max-w-md p-8 rounded-lg bg-slate-surface border border-graphite shadow-2xl">
-      <div className="text-center mb-8">
-        <ShieldCheck className="w-12 h-12 text-signal mx-auto mb-4" />
-        <h1 className="text-xl font-medium text-frost">Two-Factor Authentication</h1>
-        <p className="text-ash text-sm mt-2">Enter the 6-digit code from your authenticator app</p>
+    <div className="bg-bunker border border-steel flex flex-col shadow-2xl">
+      <div className="p-6 border-b border-steel flex justify-between items-start">
+        <div>
+          <h1 className="font-mono font-bold tracking-[0.2em] text-frost text-xl mb-1">MFA_CHALLENGE</h1>
+          <p className="text-[10px] font-mono text-ash tracking-wider">SECONDARY AUTHENTICATION REQUIRED</p>
+        </div>
+        <div className="text-[10px] font-mono border border-steel px-2 py-1 bg-obsidian">
+          <span className="text-ash">TTL: </span>
+          <span className={timeLeft < 10 ? "text-kill" : "text-amber"}>{timeLeft}s</span>
+        </div>
       </div>
 
-      <form onSubmit={handleVerify} className="space-y-6">
-        <div className="flex justify-between gap-2">
-          {code.map((digit, i) => (
-            <input
-              key={i}
-              ref={(el) => { inputRefs.current[i] = el; }}
-              type="text"
-              maxLength={1}
-              value={digit}
-              onChange={(e) => handleChange(i, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(i, e)}
-              className="w-12 h-14 text-center text-xl font-mono bg-void border border-graphite rounded-md text-frost focus:outline-none focus:border-signal focus:ring-1 focus:ring-signal transition-colors"
-            />
-          ))}
-        </div>
+      <div className="p-8">
+        <form onSubmit={handleVerify} className="space-y-6">
+          <div className="space-y-3">
+            <label className="block text-[10px] font-mono uppercase tracking-wider text-ash text-center">
+              INPUT TIME-BASED ONE-TIME PASSWORD
+            </label>
+            <div className="flex justify-center gap-2">
+              {code.map((digit, i) => (
+                <input
+                  key={i}
+                  ref={(el) => { inputRefs.current[i] = el; }}
+                  type="text"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleChange(i, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(i, e)}
+                  className="w-10 h-12 text-center text-lg font-mono bg-obsidian border border-steel text-chalk focus:outline-none focus:border-amber focus:ring-1 focus:ring-amber transition-colors selection:bg-amber/30"
+                />
+              ))}
+            </div>
+          </div>
 
-        <div className="flex items-center justify-center text-sm text-ash gap-2">
-          <Clock className="w-4 h-4" />
-          <span>Code expires in <span className="font-mono text-signal">{timeLeft}s</span></span>
-        </div>
+          {error && (
+            <div className="text-kill text-[11px] font-mono bg-kill/5 border border-kill/20 p-2 text-center">
+              [ERR] {error}
+            </div>
+          )}
 
-        {error && <div className="text-kill text-sm text-center bg-kill/10 p-2 rounded">{error}</div>}
+          <button
+            type="submit"
+            disabled={loading || code.join('').length !== 6}
+            className="bg-amber text-obsidian font-mono text-xs font-semibold w-full py-2.5 hover:bg-frost transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+          >
+            {loading ? 'VALIDATING...' : 'AUTHORIZE SESSION'}
+          </button>
+        </form>
+      </div>
 
-        <button
-          type="submit"
-          disabled={loading || code.join('').length !== 6}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-void bg-signal hover:bg-signal/90 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {loading ? <Loader2 className="w-5 h-5 animate-spin text-void" /> : 'Verify'}
-        </button>
-      </form>
+      <div className="border-t border-steel bg-obsidian p-2 flex justify-center">
+        <span className="text-[9px] font-mono text-ash/30 uppercase tracking-widest">
+          ALGORITHM: HMAC-SHA1 · DIGITS: 6 · PERIOD: 30S
+        </span>
+      </div>
     </div>
   );
 }

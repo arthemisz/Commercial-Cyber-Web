@@ -1,48 +1,102 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-void: #0A0E17;
-  --color-slate-surface: #111827;
-  --color-graphite: #1E293B;
-  --color-signal: #3B82F6;
-  --color-verified: #10B981;
+  /* === TACTICAL EDITORIAL PALETTE === */
+  --color-obsidian: #0b0d10;
+  --color-bunker: #12141a;
+  --color-gunmetal: #1a1d25;
+  --color-steel: #282c35;
+  --color-graphite: #3a3f4b;
+  --color-ash: #6b7280;
+  --color-chalk: #d1d5db;
+  --color-frost: #f0f0f2;
+  --color-paper: #F5F5F7;
+  
+  /* Functional accents — ONLY for interactive/active states */
+  --color-amber: #FF9900;
+  --color-cobalt: #2563EB;
+  --color-cyan: #06B6D4;
+  --color-verified: #22C55E;
   --color-kill: #EF4444;
-  --color-caution: #F59E0B;
-  --color-frost: #F1F5F9;
-  --color-ash: #94A3B8;
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  
+  /* Typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Geist Mono', ui-monospace, monospace;
+  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
-html {
-  background-color: var(--color-void);
-  color: var(--color-frost);
+:root {
+  --grid-gap-sm: 0.5rem;
+  --grid-gap-md: 1rem;
+  --grid-gap-lg: 2rem;
+  --grid-gap-xl: 4rem;
 }
 
-body {
-  font-family: var(--font-sans);
+html, body {
+  background-color: var(--color-obsidian);
+  color: var(--color-chalk);
+  letter-spacing: -0.015em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Scrollbar styling for dark theme */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: var(--color-void);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-graphite);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-ash);
+  background: var(--color-gunmetal);
 }
 
-/* Focus ring utility */
-.focus-ring {
-  outline: 2px solid var(--color-signal);
+::-webkit-scrollbar-thumb {
+  background: var(--color-steel);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-graphite);
+}
+
+/* Grid Overlay */
+.grid-overlay {
+  background-size: 40px 40px;
+  background-image: 
+    repeating-linear-gradient(to right, var(--color-gunmetal) 0, var(--color-gunmetal) 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(to bottom, var(--color-gunmetal) 0, var(--color-gunmetal) 1px, transparent 1px, transparent 40px);
+}
+
+/* Section Label */
+.section-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-ash);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* Hairline Divider */
+.hairline-divider {
+  border: 0;
+  border-bottom: 1px solid var(--color-steel);
+}
+
+/* Focus Ring */
+*:focus-visible {
+  outline: 2px solid var(--color-amber);
   outline-offset: 2px;
+}
+
+/* Selection Colors */
+::selection {
+  background-color: var(--color-amber);
+  color: var(--color-obsidian);
+}
+
+/* Tactical Border */
+.tactical-border {
+  border: 1px solid var(--color-steel);
 }

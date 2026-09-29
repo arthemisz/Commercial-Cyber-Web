@@ -1,21 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { cn } from '@/lib/utils';
-import { Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [mfaRequired, setMfaRequired] = useState(false);
-  const [mfaCode, setMfaCode] = useState('');
-
+  const router = useRouter();
   const supabase = createClient();
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -34,87 +29,73 @@ export default function LoginPage() {
       return;
     }
 
-    if (data.session === null) {
-      // Possible MFA requirement flow (simplified)
-      setMfaRequired(true);
-      setLoading(false);
-      return;
-    }
-
     router.push('/dashboard');
   };
 
-  const handleMfaSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    
-    // In a real app we'd verify MFA challenge here
-    router.push('/mfa-verify');
-  };
-
   return (
-    <div className="w-full max-w-md p-8 rounded-lg bg-slate-surface border border-graphite shadow-2xl">
-      <div className="text-center mb-8">
-        <h1 className="text-2xl font-mono text-signal tracking-widest font-bold">CYBERCONSULT</h1>
-        <p className="text-ash text-sm mt-2">Secure access to your engagements</p>
+    <div className="bg-bunker border border-steel flex flex-col shadow-2xl relative">
+      <div className="p-8 pb-6 border-b border-steel">
+        <h1 className="font-mono font-bold tracking-[0.2em] text-frost text-2xl mb-1">CYBERTHINK</h1>
+        <p className="text-[10px] font-mono text-ash tracking-wider">SECURE ACCESS TERMINAL</p>
       </div>
 
-      {!mfaRequired ? (
-        <form onSubmit={handleSignIn} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-frost mb-1">Email</label>
+      <div className="p-8">
+        <form onSubmit={handleSignIn} className="space-y-5">
+          <div className="space-y-2">
+            <label className="block text-[10px] font-mono uppercase tracking-wider text-ash">
+              IDENTIFIER [EMAIL]
+            </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full bg-void border border-graphite rounded-md px-3 py-2 text-frost focus:outline-none focus:border-signal focus:ring-1 focus:ring-signal transition-colors"
-              placeholder="operator@company.com"
+              className="w-full bg-obsidian border border-steel text-chalk font-mono text-sm px-3 py-2.5 focus:outline-none focus:border-amber focus:ring-1 focus:ring-amber transition-colors"
+              placeholder="operator@cyberthink.io"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-frost mb-1">Password</label>
+
+          <div className="space-y-2">
+            <label className="block text-[10px] font-mono uppercase tracking-wider text-ash">
+              ACCESS KEY [PASSWORD]
+            </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full bg-void border border-graphite rounded-md px-3 py-2 text-frost focus:outline-none focus:border-signal focus:ring-1 focus:ring-signal transition-colors"
-              placeholder="••••••••"
+              className="w-full bg-obsidian border border-steel text-chalk font-mono text-sm px-3 py-2.5 focus:outline-none focus:border-amber focus:ring-1 focus:ring-amber transition-colors"
+              placeholder="••••••••••••••••"
             />
           </div>
 
-          {error && <div className="text-kill text-sm mt-2 p-2 bg-kill/10 rounded">{error}</div>}
+          {error && (
+            <div className="text-kill text-[11px] font-mono bg-kill/5 border border-kill/20 p-2">
+              [ERR] {error}
+            </div>
+          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-void bg-signal hover:bg-signal/90 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="bg-amber text-obsidian font-mono text-xs font-semibold w-full py-2.5 hover:bg-frost transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin text-void" /> : 'Sign In'}
+            {loading ? 'AUTHENTICATING...' : 'INITIALIZE SESSION'}
           </button>
+        </form>
 
-          <div className="mt-4 text-center text-sm text-ash">
-            Don't have an account?{' '}
-            <Link href="/register" className="text-signal hover:underline">
-              Register
-            </Link>
-          </div>
-        </form>
-      ) : (
-        <form onSubmit={handleMfaSubmit} className="space-y-4">
-          <div className="text-sm text-frost mb-4">
-            Two-factor authentication is required for this account.
-          </div>
-          <button
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-void bg-signal hover:bg-signal/90 focus:outline-none transition-colors"
-          >
-            Proceed to Verification
-          </button>
-        </form>
-      )}
+        <div className="mt-6 text-center">
+          <Link href="/register" className="text-cyan hover:text-amber text-[11px] font-mono transition-colors">
+            NO CREDENTIALS? INITIATE PROVISIONING →
+          </Link>
+        </div>
+      </div>
+
+      <div className="border-t border-steel bg-obsidian p-3 flex justify-center">
+        <span className="text-[9px] font-mono text-ash/30 uppercase tracking-widest">
+          ENCRYPTION: AES-256-GCM · AUTH: SUPABASE · MFA: TOTP
+        </span>
+      </div>
     </div>
   );
 }
