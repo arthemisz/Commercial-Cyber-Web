@@ -1,0 +1,48 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-void: #0A0E17;
+  --color-slate-surface: #111827;
+  --color-graphite: #1E293B;
+  --color-signal: #3B82F6;
+  --color-verified: #10B981;
+  --color-kill: #EF4444;
+  --color-caution: #F59E0B;
+  --color-frost: #F1F5F9;
+  --color-ash: #94A3B8;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+html {
+  background-color: var(--color-void);
+  color: var(--color-frost);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling for dark theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-void);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-graphite);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ash);
+}
+
+/* Focus ring utility */
+.focus-ring {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+}
