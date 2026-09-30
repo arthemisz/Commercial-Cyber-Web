@@ -82,65 +82,77 @@ export default async function FindingsPage({
   const getSeverityBadge = (severity: string) => {
     switch (severity) {
       case 'CRITICAL':
-        return 'bg-kill/15 text-kill border-kill/30'
+        return 'bg-kill/10 text-kill border-kill/30'
       case 'HIGH':
-        return 'bg-caution/15 text-caution border-caution/30'
+        return 'bg-amber/10 text-amber border-amber/30'
       case 'MEDIUM':
-        return 'bg-signal/15 text-signal border-signal/30'
+        return 'bg-verified/10 text-verified border-verified/30'
       case 'LOW':
-        return 'bg-ash/15 text-ash border-ash/30'
+        return 'bg-cyan/10 text-cyan border-cyan/30'
       default:
-        return 'bg-graphite text-frost border-graphite'
+        return 'bg-steel/40 text-ash border-steel'
     }
   }
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'REPORTED':
-        return 'bg-caution/10 text-caution border-caution/20'
+        return 'bg-amber/10 text-amber border-amber/30'
       case 'ACKNOWLEDGED':
-        return 'bg-signal/10 text-signal border-signal/20'
+        return 'bg-cyan/10 text-cyan border-cyan/30'
       case 'FIX_COMMITTED':
-        return 'bg-purple-500/10 text-purple-400 border-purple-500/20'
+        return 'bg-cobalt/15 text-frost border-cobalt/40'
       case 'RETEST_VERIFIED':
-        return 'bg-verified/10 text-verified border-verified/20'
+        return 'bg-verified/10 text-verified border-verified/30'
       case 'CLOSED':
-        return 'bg-graphite text-ash border-graphite'
+        return 'bg-steel/30 text-ash border-steel'
       default:
-        return 'bg-graphite text-frost border-graphite'
+        return 'bg-bunker text-chalk border-steel'
     }
   }
 
   return (
-    <div className="flex flex-col gap-6 max-w-7xl mx-auto">
-      <div className="flex items-center gap-2 text-xs text-ash">
-        <Link href={`/client/engagements/${id}`} className="hover:text-frost flex items-center gap-1 transition-colors">
-          <ChevronLeft className="w-4 h-4" />
-          Back to Engagement
+    <div className="flex flex-col gap-6 max-w-7xl mx-auto font-sans">
+      {/* Navigation Breadcrumb */}
+      <div className="flex items-center gap-2 text-xs font-mono text-ash border-b border-steel pb-4">
+        <Link href={`/client/engagements/${id}`} className="hover:text-amber flex items-center gap-1 transition-colors uppercase tracking-wider">
+          <ChevronLeft className="w-3.5 h-3.5" />
+          Back to Engagement Console
         </Link>
-        <span className="text-graphite">/</span>
-        <span className="text-frost font-medium">Vulnerability Lifecycle Tracker</span>
+        <span className="text-steel">/</span>
+        <span className="text-frost font-mono">VULNERABILITY_LIFECYCLE</span>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 border-b border-graphite pb-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 border-b border-steel pb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-frost">Structured Findings & Remediation</h1>
-          <p className="text-ash text-sm mt-1">{engagement.title} · {findings.length} total items identified</p>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="w-1.5 h-1.5 bg-amber"></span>
+            <span className="font-mono text-[10px] text-ash tracking-[0.25em] uppercase">
+              SEC_03 // DEFECT_LEDGER
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-frost font-mono">
+            Vulnerability Findings & Lifecycle Tracking
+          </h1>
+          <p className="text-ash text-xs font-mono mt-1">
+            {engagement.title} · {findings.length} verifiable defect(s) logged
+          </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <button 
             type="button"
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded border border-graphite bg-slate-surface hover:bg-graphite/40 text-frost text-xs font-mono transition-colors"
+            className="inline-flex items-center gap-2 px-3.5 py-2 border border-steel bg-bunker hover:border-amber text-frost text-xs font-mono uppercase tracking-wider transition-colors"
           >
-            <FileJson className="w-3.5 h-3.5 text-signal" />
+            <FileJson className="w-3.5 h-3.5 text-amber" />
             SARIF 2.1.0 Export
           </button>
           <button 
             type="button"
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded border border-graphite bg-slate-surface hover:bg-graphite/40 text-frost text-xs font-mono transition-colors"
+            className="inline-flex items-center gap-2 px-3.5 py-2 border border-steel bg-bunker hover:border-amber text-chalk hover:text-frost text-xs font-mono uppercase tracking-wider transition-colors"
           >
             <ExternalLink className="w-3.5 h-3.5 text-ash" />
-            Sync to Jira / GitHub
+            Sync Jira / GitHub
           </button>
         </div>
       </div>
@@ -148,64 +160,62 @@ export default async function FindingsPage({
       {/* Severity Breakdown Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
         {(Object.entries(severityCounts) as [string, number][]).map(([sev, count]) => (
-          <div key={sev} className="bg-slate-surface border border-graphite rounded-lg p-3">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs font-mono text-ash">{sev}</span>
-              <span className={cn("px-1.5 py-0.5 text-xs font-mono rounded border", getSeverityBadge(sev))}>
+          <div key={sev} className="bg-bunker border border-steel p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-ash">{sev}</span>
+              <span className={cn("px-1.5 py-0.5 text-[10px] font-mono border", getSeverityBadge(sev))}>
                 {sev === 'CRITICAL' ? '9.0 - 10.0' : sev === 'HIGH' ? '7.0 - 8.9' : sev === 'MEDIUM' ? '4.0 - 6.9' : sev === 'LOW' ? '0.1 - 3.9' : '0.0'}
               </span>
             </div>
-            <span className="text-2xl font-semibold text-frost">{count}</span>
+            <span className="text-2xl font-bold font-mono text-frost">{count}</span>
           </div>
         ))}
       </div>
 
       {/* Findings Table */}
       {findings.length === 0 ? (
-        <div className="flex flex-col items-center justify-center p-16 bg-slate-surface border border-graphite rounded-lg text-center">
-          <ShieldCheck className="w-12 h-12 text-verified mb-3 opacity-80" />
-          <h3 className="text-lg font-semibold text-frost">Zero Vulnerabilities Recorded</h3>
-          <p className="text-ash text-sm mt-1 max-w-md">No security defects have been logged yet for this engagement scope.</p>
+        <div className="flex flex-col items-center justify-center p-16 bg-bunker border border-steel text-center">
+          <ShieldCheck className="w-10 h-10 text-verified mb-3" />
+          <h3 className="text-base font-bold text-frost font-mono">NO VULNERABILITIES RECORDED</h3>
+          <p className="text-ash text-xs font-mono mt-1 max-w-md">No security defects have been logged yet within this authenticated scope.</p>
         </div>
       ) : (
-        <div className="overflow-x-auto border border-graphite rounded-lg bg-slate-surface">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-void/60 border-b border-graphite text-xs font-medium text-ash">
+        <div className="overflow-x-auto border border-steel bg-bunker">
+          <table className="w-full text-left text-xs font-mono">
+            <thead className="bg-obsidian border-b border-steel text-[10px] font-medium text-ash uppercase tracking-wider">
               <tr>
-                <th className="px-4 py-3">Severity & Score</th>
-                <th className="px-4 py-3">Finding Title</th>
-                <th className="px-4 py-3">Taxonomy (CWE)</th>
-                <th className="px-4 py-3">CVSS Vector</th>
-                <th className="px-4 py-3">Audit State</th>
-                <th className="px-4 py-3">Updated</th>
+                <th className="px-4 py-3">SEVERITY / SCORE</th>
+                <th className="px-4 py-3">FINDING TITLE</th>
+                <th className="px-4 py-3">TAXONOMY</th>
+                <th className="px-4 py-3">CVSS VECTOR</th>
+                <th className="px-4 py-3">STATE</th>
+                <th className="px-4 py-3">UPDATED</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-graphite/40">
+            <tbody className="divide-y divide-steel">
               {findings.map((finding) => (
-                <tr key={finding.id} className="hover:bg-graphite/20 transition-colors">
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    <div className="flex items-center gap-2">
-                      <span className={cn("px-2 py-0.5 text-xs font-mono rounded border font-semibold", getSeverityBadge(finding.severity))}>
-                        {finding.cvssScore.toFixed(1)} {finding.severity}
-                      </span>
-                    </div>
+                <tr key={finding.id} className="hover:bg-gunmetal/40 transition-colors">
+                  <td className="px-4 py-3.5 whitespace-nowrap">
+                    <span className={cn("px-2 py-0.5 text-[11px] font-mono border font-semibold", getSeverityBadge(finding.severity))}>
+                      {finding.cvssScore.toFixed(1)} {finding.severity}
+                    </span>
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="font-medium text-frost">{finding.title}</div>
-                    <div className="text-xs text-ash mt-0.5 max-w-md line-clamp-1">{finding.description}</div>
+                  <td className="px-4 py-3.5">
+                    <div className="font-semibold text-frost text-sm font-sans">{finding.title}</div>
+                    <div className="text-xs text-ash mt-0.5 max-w-md line-clamp-1 font-sans">{finding.description}</div>
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs text-ash whitespace-nowrap">
-                    {finding.cweIdentifier || 'CWE-Unassigned'}
+                  <td className="px-4 py-3.5 font-mono text-amber whitespace-nowrap">
+                    {finding.cweIdentifier || 'CWE-UNASSIGNED'}
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs text-ash max-w-xs truncate" title={finding.cvssVector}>
+                  <td className="px-4 py-3.5 font-mono text-[11px] text-ash max-w-xs truncate" title={finding.cvssVector}>
                     {finding.cvssVector}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    <span className={cn("px-2 py-0.5 text-xs font-mono rounded border", getStatusBadge(finding.status))}>
+                  <td className="px-4 py-3.5 whitespace-nowrap">
+                    <span className={cn("px-2 py-0.5 text-[10px] font-mono border tracking-wider", getStatusBadge(finding.status))}>
                       {finding.status.replace(/_/g, ' ')}
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs text-ash whitespace-nowrap">
+                  <td className="px-4 py-3.5 font-mono text-[11px] text-ash whitespace-nowrap">
                     {new Date(finding.updatedAt).toLocaleDateString()}
                   </td>
                 </tr>

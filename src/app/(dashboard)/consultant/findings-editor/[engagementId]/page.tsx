@@ -47,44 +47,52 @@ export default function FindingsEditorPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6 max-w-6xl mx-auto">
-      <div className="flex items-center gap-2 text-xs text-ash">
-        <Link href="/consultant" className="hover:text-frost flex items-center gap-1 transition-colors">
-          <ChevronLeft className="w-4 h-4" />
-          Back to Consultant Console
+    <div className="flex flex-col gap-6 max-w-6xl mx-auto font-sans">
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2 text-xs font-mono text-ash border-b border-steel pb-4">
+        <Link href="/consultant" className="hover:text-amber flex items-center gap-1 transition-colors uppercase tracking-wider">
+          <ChevronLeft className="w-3.5 h-3.5" />
+          CONSULTANT CONSOLE
         </Link>
-        <span className="text-graphite">/</span>
-        <span className="text-frost font-mono">Engagement #{engagementId.slice(0, 8)}</span>
-        <span className="text-graphite">/</span>
-        <span className="text-frost font-medium">Vulnerability Disclosure Form</span>
+        <span className="text-steel">/</span>
+        <span className="text-frost font-mono">ENGAGEMENT #{engagementId.slice(0, 8)}</span>
+        <span className="text-steel">/</span>
+        <span className="text-amber font-mono uppercase tracking-wider">VULNERABILITY_DISCLOSURE</span>
       </div>
 
-      <div className="bg-slate-surface border border-graphite rounded-lg p-5 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+      {/* Header Panel */}
+      <div className="bg-bunker border border-steel p-6 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-frost">Report Security Vulnerability</h1>
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-signal/10 border border-signal/30 text-signal">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="w-1.5 h-1.5 bg-amber"></span>
+            <span className="font-mono text-[10px] text-ash tracking-[0.25em] uppercase">
+              SEC_06 // DISCLOSURE_INGESTION
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl font-bold text-frost font-mono">Report Security Vulnerability</h1>
+            <span className="text-[10px] font-mono px-2 py-0.5 border border-verified/30 bg-verified/10 text-verified uppercase tracking-wider">
               AUTHORIZED SCOPE
             </span>
           </div>
-          <p className="text-xs text-ash mt-1">
-            Structured lifecycle submission adhering to CVSS v3.1 / v4.0 metrics and CWE taxonomy.
+          <p className="text-xs font-mono text-ash mt-1">
+            Structured lifecycle ingestion compliant with CVSS v3.1 / v4.0 metrics and MITRE CWE taxonomy.
           </p>
         </div>
-        <div className="flex items-center gap-2 text-caution text-xs font-mono bg-caution/10 border border-caution/30 px-3 py-1.5 rounded">
-          <AlertTriangle className="w-4 h-4 shrink-0" />
-          <span>All PoC payloads must comply with signed RoE limits.</span>
+        <div className="flex items-center gap-2 text-amber text-xs font-mono bg-amber/5 border border-amber/30 px-3 py-2 self-start sm:self-auto">
+          <AlertTriangle className="w-4 h-4 shrink-0 text-amber" />
+          <span>PoC payloads strictly bounded by signed RoE parameters.</span>
         </div>
       </div>
 
       {submitted ? (
-        <div className="bg-slate-surface border border-graphite rounded-lg p-12 text-center flex flex-col items-center justify-center space-y-4">
-          <div className="w-12 h-12 rounded-full bg-verified/20 border border-verified/40 flex items-center justify-center text-verified">
+        <div className="bg-bunker border border-steel p-12 text-center flex flex-col items-center justify-center space-y-4">
+          <div className="w-12 h-12 bg-verified/10 border border-verified/40 flex items-center justify-center text-verified">
             <CheckCircle2 className="w-6 h-6" />
           </div>
-          <h2 className="text-xl font-bold text-frost">Vulnerability Finding Logged</h2>
-          <p className="text-sm text-ash max-w-md">
-            The defect has entered the state machine as <span className="text-caution font-mono">REPORTED</span>. Client SecOps has been notified via real-time telemetry.
+          <h2 className="text-xl font-bold text-frost font-mono">Vulnerability Finding Logged</h2>
+          <p className="text-xs font-mono text-ash max-w-md">
+            The defect has entered the state machine as <span className="text-amber font-bold">REPORTED</span>. Client SecOps has been dispatched real-time telemetry.
           </p>
           <div className="flex gap-4 pt-4">
             <button
@@ -101,66 +109,66 @@ export default function FindingsEditorPage() {
                   remediation: ''
                 })
               }}
-              className="px-4 py-2 rounded bg-signal text-void text-xs font-semibold hover:bg-signal/90 transition-colors"
+              className="px-4 py-2 bg-amber text-obsidian text-xs font-mono font-semibold uppercase tracking-wider hover:bg-frost transition-colors"
             >
               Report Another Finding
             </button>
             <Link
               href={`/client/engagements/${engagementId}/findings`}
-              className="px-4 py-2 rounded border border-graphite hover:bg-graphite/40 text-frost text-xs transition-colors"
+              className="px-4 py-2 border border-steel hover:border-amber text-frost text-xs font-mono uppercase tracking-wider transition-colors"
             >
-              View Findings Tracker
+              View Findings Tracker →
             </Link>
           </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <form onSubmit={handleSubmit} className="lg:col-span-7 flex flex-col gap-6">
-            <div className="space-y-5 bg-slate-surface border border-graphite rounded-lg p-6">
-              <h2 className="text-base font-semibold text-frost border-b border-graphite pb-3">Finding Details</h2>
+            <div className="space-y-5 bg-bunker border border-steel p-6">
+              <h2 className="text-xs font-semibold text-frost uppercase tracking-wider font-mono border-b border-steel pb-3">
+                Defect Specification
+              </h2>
               
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-ash">Finding Title</label>
+                <label className="text-[10px] font-mono uppercase tracking-wider text-ash">Finding Title</label>
                 <input 
                   type="text"
                   required
                   value={formData.title}
                   onChange={e => setFormData(p => ({...p, title: e.target.value}))}
-                  className="w-full bg-void border border-graphite rounded px-3 py-2 text-sm text-frost focus:outline-none focus:border-signal"
+                  className="w-full bg-obsidian border border-steel px-3 py-2 text-xs font-mono text-frost focus:outline-none focus:border-amber transition-colors"
                   placeholder="e.g. Remote Code Execution via Insecure YAML Deserialization"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-ash">CWE Taxonomy Tag</label>
-                <div className="flex gap-2">
-                  <select
-                    value={formData.cweId}
-                    onChange={e => setFormData(p => ({...p, cweId: e.target.value}))}
-                    className="w-full bg-void border border-graphite rounded px-3 py-2 text-xs font-mono text-frost focus:outline-none focus:border-signal"
-                  >
-                    {COMMON_CWES.map(cwe => (
-                      <option key={cwe.id} value={cwe.id}>
-                        {cwe.id} — {cwe.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <label className="text-[10px] font-mono uppercase tracking-wider text-ash">CWE Taxonomy Tag</label>
+                <select
+                  value={formData.cweId}
+                  onChange={e => setFormData(p => ({...p, cweId: e.target.value}))}
+                  className="w-full bg-obsidian border border-steel px-3 py-2 text-xs font-mono text-frost focus:outline-none focus:border-amber transition-colors"
+                >
+                  {COMMON_CWES.map(cwe => (
+                    <option key={cwe.id} value={cwe.id}>
+                      {cwe.id} — {cwe.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center">
-                  <label className="text-xs font-medium text-ash">Detailed Description</label>
+                  <label className="text-[10px] font-mono uppercase tracking-wider text-ash">Detailed Description</label>
                   <button 
                     type="button" 
                     onClick={() => setPreview(!preview)} 
-                    className="text-xs font-mono text-signal hover:underline"
+                    className="text-[10px] font-mono text-amber hover:underline uppercase tracking-wider"
                   >
                     {preview ? 'Edit Raw' : 'Preview'}
                   </button>
                 </div>
                 {preview ? (
-                  <div className="bg-void border border-graphite rounded p-3 text-frost text-xs min-h-[100px] whitespace-pre-wrap font-sans">
+                  <div className="bg-obsidian border border-steel p-3 text-frost text-xs min-h-[100px] whitespace-pre-wrap font-mono">
                     {formData.description || 'No description entered.'}
                   </div>
                 ) : (
@@ -168,42 +176,42 @@ export default function FindingsEditorPage() {
                     required
                     value={formData.description}
                     onChange={e => setFormData(p => ({...p, description: e.target.value}))}
-                    className="w-full bg-void border border-graphite rounded px-3 py-2 text-xs text-frost h-28 resize-y focus:outline-none focus:border-signal"
-                    placeholder="Describe the vulnerability mechanics, business impact, and affected components..."
+                    className="w-full bg-obsidian border border-steel px-3 py-2 text-xs font-mono text-chalk h-28 resize-y focus:outline-none focus:border-amber transition-colors"
+                    placeholder="Describe vulnerability mechanics, impact surface, and reproduction steps..."
                   />
                 )}
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-ash">Sanitized Proof of Concept (PoC)</label>
+                <label className="text-[10px] font-mono uppercase tracking-wider text-ash">Sanitized Proof of Concept (PoC)</label>
                 <textarea 
                   required
                   value={formData.poc}
                   onChange={e => setFormData(p => ({...p, poc: e.target.value}))}
-                  className="w-full bg-void border border-graphite rounded px-3 py-2 text-xs font-mono text-signal h-28 resize-y focus:outline-none focus:border-signal"
-                  placeholder="HTTP request headers, curl commands, sanitized exploitation payloads..."
+                  className="w-full bg-obsidian border border-steel px-3 py-2 text-xs font-mono text-amber h-28 resize-y focus:outline-none focus:border-amber transition-colors"
+                  placeholder="HTTP request headers, curl commands, sanitized exploitation vectors..."
                 />
-                <p className="text-[11px] text-ash">Markdown inputs are sanitized using DOMPurify before UI rendering.</p>
+                <p className="text-[10px] font-mono text-ash/70">Payloads are client-side sanitized using DOMPurify before UI render.</p>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-ash">Remediation Guidance</label>
+                <label className="text-[10px] font-mono uppercase tracking-wider text-ash">Remediation Guidance</label>
                 <textarea 
                   required
                   value={formData.remediation}
                   onChange={e => setFormData(p => ({...p, remediation: e.target.value}))}
-                  className="w-full bg-void border border-graphite rounded px-3 py-2 text-xs text-frost h-24 resize-y focus:outline-none focus:border-signal"
-                  placeholder="Code patches, architectural remediations, or configuration changes..."
+                  className="w-full bg-obsidian border border-steel px-3 py-2 text-xs font-mono text-frost h-24 resize-y focus:outline-none focus:border-amber transition-colors"
+                  placeholder="Code patches, firewall filters, or architecture adjustments..."
                 />
               </div>
 
               <button 
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-2 bg-signal hover:bg-signal/90 text-void px-4 py-2.5 rounded font-semibold text-xs tracking-wide uppercase transition-colors"
+                className="w-full flex items-center justify-center gap-2 bg-amber hover:bg-frost text-obsidian px-4 py-2.5 font-semibold text-xs font-mono tracking-wider uppercase transition-colors disabled:opacity-50"
               >
                 <Send className="w-3.5 h-3.5" />
-                {isSubmitting ? 'Logging Defect...' : 'Submit Finding to Client'}
+                {isSubmitting ? 'LOGGING DEFECT...' : 'SUBMIT FINDING TO CLIENT'}
               </button>
             </div>
           </form>
@@ -227,4 +235,3 @@ export default function FindingsEditorPage() {
     </div>
   )
 }
-

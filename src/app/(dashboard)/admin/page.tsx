@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { Users, Shield, Database, Activity, Lock, AlertOctagon } from 'lucide-react'
+import { Users, Shield, Database, Activity, Lock, AlertOctagon, Terminal } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
@@ -65,95 +65,110 @@ export default async function AdminDashboard() {
   const platformRevenueCents = Math.round(totalEscrowCents * 0.15)
 
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-graphite pb-6">
+    <div className="flex flex-col gap-8 max-w-7xl mx-auto font-sans">
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-steel pb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-frost">Platform Administration</h1>
-          <p className="text-ash text-sm mt-1">Zero-trust telemetry, cryptographic audit logs, and engagement monitoring.</p>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="w-1.5 h-1.5 bg-amber"></span>
+            <span className="font-mono text-[10px] text-ash tracking-[0.25em] uppercase">
+              SEC_08 // GOVERNANCE_TELEMETRY
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-frost font-mono">
+            PLATFORM GOVERNANCE & TELEMETRY
+          </h1>
+          <p className="text-ash text-xs font-mono mt-1">
+            Zero-trust state inspection, append-only cryptographic audit logs, and escrow telemetry.
+          </p>
         </div>
         <div className="flex items-center gap-2 self-start md:self-auto">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded bg-verified/10 text-verified border border-verified/30">
-            <span className="w-2 h-2 rounded-full bg-verified animate-pulse" />
-            Audit Log Immutable
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono border border-verified/30 bg-verified/10 text-verified uppercase tracking-wider">
+            <span className="w-1.5 h-1.5 bg-verified"></span>
+            AUDIT TRAIL: IMMUTABLE WORM
           </span>
         </div>
       </div>
 
+      {/* Metric Tiles */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-surface border border-graphite rounded-lg p-5">
-          <div className="flex items-center justify-between text-ash mb-3">
-            <span className="text-xs font-medium uppercase tracking-wider">Total Users</span>
-            <Users className="w-4 h-4 text-signal" />
+        <div className="bg-bunker border border-steel p-5 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-ash mb-3 text-[10px] font-mono uppercase tracking-wider">
+            <span>VERIFIED IDENTITIES</span>
+            <Users className="w-4 h-4 text-cyan" />
           </div>
-          <span className="text-3xl font-semibold text-frost tracking-tight">{userCount}</span>
-          <p className="text-xs text-ash mt-1">Verified enterprise & consultant identities</p>
+          <span className="text-3xl font-bold font-mono text-frost tracking-tight">{userCount}</span>
+          <p className="text-[10px] font-mono text-ash mt-2">Enterprise & consultant accounts</p>
         </div>
 
-        <div className="bg-slate-surface border border-graphite rounded-lg p-5">
-          <div className="flex items-center justify-between text-ash mb-3">
-            <span className="text-xs font-medium uppercase tracking-wider">Active Testing</span>
-            <Shield className="w-4 h-4 text-signal" />
+        <div className="bg-bunker border border-steel p-5 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-ash mb-3 text-[10px] font-mono uppercase tracking-wider">
+            <span>ACTIVE OPERATIONS</span>
+            <Shield className="w-4 h-4 text-verified" />
           </div>
-          <span className="text-3xl font-semibold text-signal tracking-tight">{activeEngagements}</span>
-          <p className="text-xs text-ash mt-1">Live engagements in scope</p>
+          <span className="text-3xl font-bold font-mono text-verified tracking-tight">{activeEngagements}</span>
+          <p className="text-[10px] font-mono text-ash mt-2">Live testing authorizations</p>
         </div>
 
-        <div className="bg-slate-surface border border-graphite rounded-lg p-5">
-          <div className="flex items-center justify-between text-ash mb-3">
-            <span className="text-xs font-medium uppercase tracking-wider">Held in Escrow</span>
-            <Database className="w-4 h-4 text-signal" />
+        <div className="bg-bunker border border-steel p-5 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-ash mb-3 text-[10px] font-mono uppercase tracking-wider">
+            <span>HELD IN ESCROW</span>
+            <Database className="w-4 h-4 text-amber" />
           </div>
-          <span className="text-3xl font-semibold text-frost tracking-tight">{formatCurrency(totalEscrowCents)}</span>
-          <p className="text-xs text-ash mt-1">Stripe Connect split-escrow hold</p>
+          <span className="text-3xl font-bold font-mono text-frost tracking-tight">{formatCurrency(totalEscrowCents)}</span>
+          <p className="text-[10px] font-mono text-ash mt-2">Stripe Connect multi-sig hold</p>
         </div>
 
-        <div className="bg-slate-surface border border-graphite rounded-lg p-5">
-          <div className="flex items-center justify-between text-ash mb-3">
-            <span className="text-xs font-medium uppercase tracking-wider">Platform Take (15%)</span>
-            <Activity className="w-4 h-4 text-signal" />
+        <div className="bg-bunker border border-steel p-5 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-ash mb-3 text-[10px] font-mono uppercase tracking-wider">
+            <span>PLATFORM TAKE (15%)</span>
+            <Activity className="w-4 h-4 text-amber" />
           </div>
-          <span className="text-3xl font-semibold text-verified tracking-tight">{formatCurrency(platformRevenueCents)}</span>
-          <p className="text-xs text-ash mt-1">Net platform commission</p>
+          <span className="text-3xl font-bold font-mono text-amber tracking-tight">{formatCurrency(platformRevenueCents)}</span>
+          <p className="text-[10px] font-mono text-ash mt-2">Net protocol fee</p>
         </div>
       </div>
 
+      {/* Engagements Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-frost">Recent Engagements</h2>
-          <span className="text-xs text-ash font-mono">{engagements.length} entries</span>
+          <h2 className="text-xs font-semibold text-frost uppercase tracking-wider font-mono">
+            Platform Engagements Overview
+          </h2>
+          <span className="text-xs text-ash font-mono">{engagements.length} RECORDED</span>
         </div>
-        <div className="overflow-x-auto border border-graphite rounded-lg bg-slate-surface">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-void/60 border-b border-graphite text-xs font-medium text-ash">
+        <div className="overflow-x-auto border border-steel bg-bunker">
+          <table className="w-full text-left text-xs font-mono">
+            <thead className="bg-obsidian border-b border-steel text-[10px] font-medium text-ash uppercase tracking-wider">
               <tr>
-                <th className="px-4 py-3">Engagement Scope</th>
-                <th className="px-4 py-3">Enterprise Client</th>
-                <th className="px-4 py-3">Security Consultant</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Escrow Value</th>
-                <th className="px-4 py-3">Created</th>
+                <th className="px-4 py-3">ENGAGEMENT SCOPE</th>
+                <th className="px-4 py-3">CLIENT SPONSOR</th>
+                <th className="px-4 py-3">ASSIGNED CONSULTANT</th>
+                <th className="px-4 py-3">STATUS</th>
+                <th className="px-4 py-3">ESCROW VALUE</th>
+                <th className="px-4 py-3">CREATED</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-graphite/40">
+            <tbody className="divide-y divide-steel">
               {engagements.map((eng: any) => (
-                <tr key={eng.id} className="hover:bg-graphite/20 transition-colors">
+                <tr key={eng.id} className="hover:bg-gunmetal/30 transition-colors">
                   <td className="px-4 py-3 text-frost font-medium">{eng.title}</td>
-                  <td className="px-4 py-3 text-ash font-mono text-xs">{eng.client?.email || 'N/A'}</td>
-                  <td className="px-4 py-3 text-ash font-mono text-xs">{eng.consultant?.fullName || eng.consultant?.user?.email || 'Unassigned'}</td>
+                  <td className="px-4 py-3 text-ash font-mono">{eng.client?.email || 'N/A'}</td>
+                  <td className="px-4 py-3 text-chalk font-mono">{eng.consultant?.fullName || eng.consultant?.user?.email || 'Unassigned'}</td>
                   <td className="px-4 py-3">
-                    <span className="inline-flex px-2 py-0.5 text-xs font-mono rounded bg-void border border-graphite text-signal">
-                      {eng.status}
+                    <span className="inline-flex px-2 py-0.5 text-[10px] font-mono border border-verified/30 bg-verified/10 text-verified uppercase tracking-wider">
+                      {eng.status.replace(/_/g, ' ')}
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs text-frost">{formatCurrency(eng.totalEscrowAmount)}</td>
-                  <td className="px-4 py-3 text-ash text-xs">
+                  <td className="px-4 py-3 font-mono text-amber font-semibold">{formatCurrency(eng.totalEscrowAmount)}</td>
+                  <td className="px-4 py-3 text-ash font-mono text-[11px]">
                     {formatDate(eng.createdAt)}
                   </td>
                 </tr>
               ))}
               {engagements.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-ash text-sm">No engagements found.</td>
+                  <td colSpan={6} className="px-4 py-8 text-center text-ash font-mono">No engagements found in registry.</td>
                 </tr>
               )}
             </tbody>
@@ -161,39 +176,45 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
+      {/* Immutable Security Audit Trail */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-frost">Immutable Security Audit Trail</h2>
-          <span className="text-xs text-ash font-mono">Insert-only ledger</span>
+          <div className="flex items-center gap-2">
+            <Terminal className="w-4 h-4 text-amber" />
+            <h2 className="text-xs font-semibold text-frost uppercase tracking-wider font-mono">
+              Immutable Cryptographic Audit Trail
+            </h2>
+          </div>
+          <span className="text-xs text-ash font-mono uppercase tracking-wider">Insert-only Ledger</span>
         </div>
-        <div className="overflow-x-auto border border-graphite rounded-lg bg-slate-surface">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-void/60 border-b border-graphite text-xs font-medium text-ash">
+        <div className="overflow-x-auto border border-steel bg-bunker">
+          <table className="w-full text-left font-mono text-xs">
+            <thead className="bg-obsidian border-b border-steel text-[10px] font-medium text-ash uppercase tracking-wider">
               <tr>
-                <th className="px-4 py-3">Event Timestamp</th>
-                <th className="px-4 py-3">Action Signature</th>
-                <th className="px-4 py-3">Actor ID</th>
-                <th className="px-4 py-3">Resource Target</th>
-                <th className="px-4 py-3">Metadata Payload</th>
+                <th className="px-4 py-3">TIMESTAMP</th>
+                <th className="px-4 py-3">ACTION SIGNATURE</th>
+                <th className="px-4 py-3">ACTOR ID</th>
+                <th className="px-4 py-3">RESOURCE TARGET</th>
+                <th className="px-4 py-3">METADATA PAYLOAD</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-graphite/40 font-mono text-xs">
+            <tbody className="divide-y divide-steel">
               {auditLogs.map((log: any) => (
-                <tr key={log.id} className="hover:bg-graphite/20 transition-colors">
-                  <td className="px-4 py-3 text-ash whitespace-nowrap">
+                <tr key={log.id} className="hover:bg-gunmetal/30 transition-colors">
+                  <td className="px-4 py-3 text-ash whitespace-nowrap text-[11px]">
                     {new Date(log.timestamp).toLocaleString()}
                   </td>
-                  <td className="px-4 py-3 text-signal font-semibold">{log.action}</td>
-                  <td className="px-4 py-3 text-ash">{log.userId ? log.userId.slice(0, 8) + '...' : 'System'}</td>
+                  <td className="px-4 py-3 text-amber font-semibold">{log.action}</td>
+                  <td className="px-4 py-3 text-chalk">{log.userId ? log.userId.slice(0, 10) + '...' : 'SYSTEM'}</td>
                   <td className="px-4 py-3 text-frost">{log.resourceType} ({log.resourceId.slice(0, 8)})</td>
-                  <td className="px-4 py-3 text-ash max-w-xs truncate">
+                  <td className="px-4 py-3 text-ash max-w-xs truncate font-mono text-[11px]">
                     {log.metadata ? JSON.stringify(log.metadata) : '—'}
                   </td>
                 </tr>
               ))}
               {auditLogs.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-ash font-sans text-sm">No audit logs found.</td>
+                  <td colSpan={5} className="px-4 py-8 text-center text-ash font-mono">No cryptographic audit records registered.</td>
                 </tr>
               )}
             </tbody>

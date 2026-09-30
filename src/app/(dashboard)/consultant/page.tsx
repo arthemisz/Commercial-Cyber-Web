@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { Shield, Bug, DollarSign, Award, Clock, ArrowRight, CheckCircle2, AlertTriangle, FileCode } from 'lucide-react'
+import { Shield, Bug, DollarSign, Award, Clock, ArrowRight, CheckCircle2, AlertTriangle, FileCode, Activity } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { formatCurrency, formatDate } from '@/lib/utils'
@@ -87,59 +87,68 @@ export default async function ConsultantDashboard() {
   })
 
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-graphite pb-6">
+    <div className="flex flex-col gap-8 max-w-7xl mx-auto font-sans">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-steel pb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-frost">Consultant Operations Console</h1>
-          <p className="text-ash text-sm mt-1">
-            {profile ? `Authenticated as ${profile.fullName} (${profile.user.email})` : 'Certified Security Consultant'}
+          <div className="flex items-center gap-2 mb-1">
+            <span className="w-1.5 h-1.5 bg-amber"></span>
+            <span className="font-mono text-[10px] text-ash tracking-[0.25em] uppercase">
+              SEC_05 // CONSULTANT_OPERATIONS
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-frost font-mono">
+            CONSULTANT OPERATIONS CONSOLE
+          </h1>
+          <p className="text-ash text-xs font-mono mt-1">
+            {profile ? `OPERATOR: ${profile.fullName} [${profile.user?.email || 'AUTHENTICATED'}]` : 'CERTIFIED SECURITY CONSULTANT'}
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded bg-verified/10 text-verified border border-verified/30">
-            <span className="w-1.5 h-1.5 rounded-full bg-verified" />
-            Stripe Payouts Enabled
+        <div className="flex items-center gap-3">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono border border-verified/30 bg-verified/10 text-verified">
+            <span className="w-1.5 h-1.5 bg-verified"></span>
+            STRIPE CONNECT DISBURSAL: ARMED
           </span>
         </div>
       </div>
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-surface border border-graphite rounded-lg p-5">
-          <div className="flex items-center justify-between text-ash mb-3 text-xs uppercase tracking-wider">
-            <span>Assigned Engagements</span>
-            <Shield className="w-4 h-4 text-signal" />
+        <div className="bg-bunker border border-steel p-5 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-ash mb-3 text-[10px] font-mono uppercase tracking-wider">
+            <span>ASSIGNED TARGETS</span>
+            <Shield className="w-4 h-4 text-amber" />
           </div>
-          <span className="text-3xl font-semibold text-frost tracking-tight">{engagements.length}</span>
-          <p className="text-xs text-ash mt-1">Target scopes authorized</p>
+          <span className="text-3xl font-bold font-mono text-frost tracking-tight">{engagements.length}</span>
+          <p className="text-[10px] font-mono text-ash mt-2">Active scopes authorized</p>
         </div>
 
-        <div className="bg-slate-surface border border-graphite rounded-lg p-5">
-          <div className="flex items-center justify-between text-ash mb-3 text-xs uppercase tracking-wider">
-            <span>Defects Disclosed</span>
-            <Bug className="w-4 h-4 text-signal" />
+        <div className="bg-bunker border border-steel p-5 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-ash mb-3 text-[10px] font-mono uppercase tracking-wider">
+            <span>DEFECTS DISCLOSED</span>
+            <Bug className="w-4 h-4 text-cyan" />
           </div>
-          <span className="text-3xl font-semibold text-signal tracking-tight">{totalFindings}</span>
-          <p className="text-xs text-ash mt-1">Across all active audits</p>
+          <span className="text-3xl font-bold font-mono text-frost tracking-tight">{totalFindings}</span>
+          <p className="text-[10px] font-mono text-ash mt-2">Logged in state machine</p>
         </div>
 
-        <div className="bg-slate-surface border border-graphite rounded-lg p-5">
-          <div className="flex items-center justify-between text-ash mb-3 text-xs uppercase tracking-wider">
-            <span>Escrow Net (85%)</span>
+        <div className="bg-bunker border border-steel p-5 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-ash mb-3 text-[10px] font-mono uppercase tracking-wider">
+            <span>ESCROW NET (85%)</span>
             <DollarSign className="w-4 h-4 text-verified" />
           </div>
-          <span className="text-3xl font-semibold text-verified tracking-tight">{formatCurrency(pendingPayouts)}</span>
-          <p className="text-xs text-ash mt-1">Held in Stripe split-escrow</p>
+          <span className="text-3xl font-bold font-mono text-verified tracking-tight">{formatCurrency(pendingPayouts)}</span>
+          <p className="text-[10px] font-mono text-ash mt-2">Held in milestone escrow</p>
         </div>
 
-        <div className="bg-slate-surface border border-graphite rounded-lg p-5">
-          <div className="flex items-center justify-between text-ash mb-3 text-xs uppercase tracking-wider">
-            <span>Active Certifications</span>
-            <Award className="w-4 h-4 text-signal" />
+        <div className="bg-bunker border border-steel p-5 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-ash mb-3 text-[10px] font-mono uppercase tracking-wider">
+            <span>VERIFIED CERTS</span>
+            <Award className="w-4 h-4 text-amber" />
           </div>
           <div className="flex flex-wrap gap-1.5 mt-2">
             {(profile?.certifications || ['OSCP', 'CISSP', 'CRTO']).map((cert: string) => (
-              <span key={cert} className="px-2 py-0.5 text-xs font-mono rounded bg-void border border-graphite text-frost">
+              <span key={cert} className="px-2 py-0.5 text-[10px] font-mono bg-obsidian border border-steel text-frost">
                 {cert}
               </span>
             ))}
@@ -150,55 +159,57 @@ export default async function ConsultantDashboard() {
       {/* Engagements Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-frost">Authorized Scope Assignments</h2>
-          <span className="text-xs text-ash font-mono">{engagements.length} active</span>
+          <h2 className="text-xs font-semibold text-frost uppercase tracking-wider font-mono">
+            Authorized Scope Assignments
+          </h2>
+          <span className="text-xs text-ash font-mono">{engagements.length} ACTIVE</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {engagements.map((eng: any) => (
-            <div key={eng.id} className="bg-slate-surface border border-graphite rounded-lg p-5 flex flex-col justify-between hover:border-graphite/80 transition-colors">
+            <div key={eng.id} className="bg-bunker border border-steel p-6 flex flex-col justify-between hover:border-amber/50 transition-colors">
               <div>
                 <div className="flex justify-between items-start gap-2 mb-3">
-                  <h3 className="font-semibold text-sm text-frost line-clamp-1">{eng.title}</h3>
-                  <span className="px-2 py-0.5 text-xs font-mono rounded bg-void border border-signal/40 text-signal shrink-0">
+                  <h3 className="font-bold text-sm text-frost font-mono line-clamp-1">{eng.title}</h3>
+                  <span className="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-obsidian border border-verified/30 text-verified shrink-0">
                     {eng.status.replace(/_/g, ' ')}
                   </span>
                 </div>
                 
-                <p className="text-xs text-ash mb-4">Enterprise: <span className="text-frost font-mono">{eng.client?.email}</span></p>
+                <p className="text-xs font-mono text-ash mb-4">
+                  ENTERPRISE: <span className="text-chalk">{eng.client?.email || 'Acme SecOps'}</span>
+                </p>
                 
-                <div className="bg-void p-3 rounded border border-graphite text-xs font-mono text-ash space-y-1 mb-4">
-                  <div className="flex items-center justify-between">
-                    <span>Window:</span>
+                <div className="bg-obsidian p-3 border border-steel text-xs font-mono text-ash space-y-1.5 mb-4">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span>Testing Window:</span>
                     <span className="text-frost">
                       {eng.testingStartsAt ? formatDate(eng.testingStartsAt) : 'Pending'}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between text-[11px]">
                     <span>Escrow Pool:</span>
-                    <span className="text-verified">{formatCurrency(eng.totalEscrowAmount)}</span>
+                    <span className="text-amber font-semibold">{formatCurrency(eng.totalEscrowAmount)}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-graphite">
-                <span className="text-xs font-mono text-ash">{eng._count.findings} Findings</span>
-                <div className="flex gap-2">
-                  <Link 
-                    href={`/consultant/findings-editor/${eng.id}`}
-                    className="text-xs font-medium bg-signal text-void px-3 py-1.5 rounded hover:bg-signal/90 transition-colors flex items-center gap-1"
-                  >
-                    Report Finding
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
+              <div className="flex items-center justify-between pt-4 border-t border-steel">
+                <span className="text-xs font-mono text-ash">{eng._count?.findings || 0} Findings</span>
+                <Link 
+                  href={`/consultant/findings-editor/${eng.id}`}
+                  className="text-xs font-mono font-semibold bg-amber text-obsidian px-3 py-1.5 hover:bg-frost transition-colors flex items-center gap-1 uppercase tracking-wider"
+                >
+                  Report Finding
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
             </div>
           ))}
 
           {engagements.length === 0 && (
-            <div className="p-8 text-center text-ash bg-slate-surface border border-graphite rounded-lg col-span-full">
-              No active engagement assignments currently assigned.
+            <div className="p-8 text-center text-ash bg-bunker border border-steel font-mono text-xs col-span-full">
+              NO ACTIVE ENGAGEMENT ASSIGNMENTS CURRENTLY DISPATCHED.
             </div>
           )}
         </div>
@@ -206,19 +217,21 @@ export default async function ConsultantDashboard() {
 
       {/* Security Audit Feed */}
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-frost">Operational Telemetry</h2>
-        <div className="bg-slate-surface border border-graphite rounded-lg divide-y divide-graphite/40">
+        <h2 className="text-xs font-semibold text-frost uppercase tracking-wider font-mono">
+          Operational Security Telemetry
+        </h2>
+        <div className="bg-bunker border border-steel divide-y divide-steel">
           {auditLogs.map((log: any) => (
-            <div key={log.id} className="p-3.5 text-xs font-mono flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div key={log.id} className="p-3.5 text-xs font-mono flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-gunmetal/30 transition-colors">
               <div className="flex items-center gap-3">
-                <span className="text-signal font-semibold">{log.action}</span>
+                <span className="text-amber font-semibold">{log.action}</span>
                 <span className="text-ash">{log.resourceType} #{log.resourceId.slice(0, 8)}</span>
               </div>
-              <span className="text-ash">{formatDate(log.timestamp)}</span>
+              <span className="text-ash text-[11px]">{formatDate(log.timestamp)}</span>
             </div>
           ))}
           {auditLogs.length === 0 && (
-            <div className="p-4 text-xs text-ash text-center">No recent security events logged.</div>
+            <div className="p-4 text-xs font-mono text-ash text-center">No recent security events logged.</div>
           )}
         </div>
       </div>
