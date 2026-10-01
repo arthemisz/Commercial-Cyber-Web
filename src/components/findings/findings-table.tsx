@@ -22,13 +22,14 @@ interface Props {
   onRowClick?: (id: string) => void;
 }
 
-const getSeverityColor = (severity: string) => {
+const getSeverityDot = (severity: string) => {
   switch (severity.toLowerCase()) {
-    case 'critical': return 'bg-kill text-white border-kill';
-    case 'high': return 'bg-kill/80 text-white border-kill/80';
-    case 'medium': return 'bg-caution text-void border-caution';
-    case 'low': return 'bg-signal text-void border-signal';
-    default: return 'bg-ash text-void border-ash';
+    case 'critical': return 'bg-kill';
+    case 'high': return 'bg-amber';
+    case 'medium': return 'bg-cyan';
+    case 'low': return 'bg-ash';
+    case 'info': return 'bg-cobalt';
+    default: return 'bg-steel';
   }
 };
 
@@ -70,24 +71,24 @@ export function FindingsTable({ findings, onRowClick }: Props) {
   });
 
   return (
-    <div className="bg-slate-surface rounded-lg border border-graphite/50 overflow-hidden flex flex-col">
-      <div className="p-4 border-b border-graphite flex flex-col sm:flex-row gap-4 justify-between items-center bg-void/30">
-        <div className="flex-1 w-full relative">
+    <div className="bg-bunker border border-steel flex flex-col font-mono">
+      <div className="p-4 border-b border-steel flex flex-col sm:flex-row gap-4 justify-between items-center bg-obsidian">
+        <div className="flex-1 w-full">
           <input 
             type="text" 
-            placeholder="Search vulnerabilities..." 
+            placeholder="SEARCH VULNERABILITIES..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-void border border-graphite text-frost rounded px-4 py-2 font-mono text-sm focus:outline-none focus:border-signal"
+            className="w-full bg-gunmetal border border-steel text-chalk px-3 py-2 text-[10px] uppercase placeholder:text-ash/50 focus:outline-none focus:border-amber transition-colors"
           />
         </div>
         <div className="w-full sm:w-48">
           <select 
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full bg-void border border-graphite text-frost rounded px-4 py-2 font-mono text-sm focus:outline-none focus:border-signal"
+            className="w-full bg-gunmetal border border-steel text-chalk px-3 py-2 text-[10px] uppercase focus:outline-none focus:border-amber transition-colors"
           >
-            <option value="">All Statuses</option>
+            <option value="">ALL STATUSES</option>
             <option value="REPORTED">REPORTED</option>
             <option value="ACKNOWLEDGED">ACKNOWLEDGED</option>
             <option value="FIX COMMITTED">FIX COMMITTED</option>
@@ -98,54 +99,56 @@ export function FindingsTable({ findings, onRowClick }: Props) {
       </div>
 
       {filteredFindings.length === 0 ? (
-        <div className="p-12 text-center text-ash flex flex-col items-center">
-          <div className="w-12 h-12 mb-4 text-graphite">
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7.53 3.35v4.47c0 4.67-2.93 8.97-7.53 10.15-4.6-.1.08-7.53-4.47-10.15-2.93-8.97V6.53L12 3.18z"/></svg>
-          </div>
-          <p className="font-mono text-lg">No vulnerabilities reported</p>
+        <div className="p-12 text-center flex flex-col items-center bg-obsidian">
+          <p className="font-mono text-xs text-ash uppercase tracking-widest">No vulnerabilities reported</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-graphite/30 text-ash text-sm font-mono border-b border-graphite">
-                <th className="p-4 cursor-pointer hover:text-frost" onClick={() => handleSort('severity')}>
-                  Severity {sortField === 'severity' && (sortDir === 'asc' ? '↑' : '↓')}
+              <tr className="bg-gunmetal border-b border-steel">
+                <th className="py-2.5 px-4 text-[10px] uppercase tracking-wider text-ash cursor-pointer hover:text-frost" onClick={() => handleSort('severity')}>
+                  SEV {sortField === 'severity' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
-                <th className="p-4 cursor-pointer hover:text-frost" onClick={() => handleSort('title')}>
-                  Title {sortField === 'title' && (sortDir === 'asc' ? '↑' : '↓')}
+                <th className="py-2.5 px-4 text-[10px] uppercase tracking-wider text-ash cursor-pointer hover:text-frost" onClick={() => handleSort('title')}>
+                  TITLE {sortField === 'title' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
-                <th className="p-4 cursor-pointer hover:text-frost" onClick={() => handleSort('cweIdentifier')}>
+                <th className="py-2.5 px-4 text-[10px] uppercase tracking-wider text-ash cursor-pointer hover:text-frost" onClick={() => handleSort('cweIdentifier')}>
                   CWE {sortField === 'cweIdentifier' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
-                <th className="p-4 cursor-pointer hover:text-frost" onClick={() => handleSort('cvssScore')}>
+                <th className="py-2.5 px-4 text-[10px] uppercase tracking-wider text-ash text-right cursor-pointer hover:text-frost" onClick={() => handleSort('cvssScore')}>
                   CVSS {sortField === 'cvssScore' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
-                <th className="p-4 cursor-pointer hover:text-frost" onClick={() => handleSort('status')}>
-                  Status {sortField === 'status' && (sortDir === 'asc' ? '↑' : '↓')}
+                <th className="py-2.5 px-4 text-[10px] uppercase tracking-wider text-ash cursor-pointer hover:text-frost" onClick={() => handleSort('status')}>
+                  STATUS {sortField === 'status' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
-                <th className="p-4 cursor-pointer hover:text-frost" onClick={() => handleSort('updatedAt')}>
-                  Updated {sortField === 'updatedAt' && (sortDir === 'asc' ? '↑' : '↓')}
+                <th className="py-2.5 px-4 text-[10px] uppercase tracking-wider text-ash cursor-pointer hover:text-frost" onClick={() => handleSort('updatedAt')}>
+                  UPDATED {sortField === 'updatedAt' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-graphite/50 text-frost text-sm">
+            <tbody className="bg-bunker divide-y divide-steel/50">
               {filteredFindings.map(f => (
                 <tr 
                   key={f.id} 
                   onClick={() => onRowClick?.(f.id)}
-                  className="hover:bg-graphite/20 cursor-pointer transition-colors"
+                  className="hover:bg-gunmetal/30 cursor-pointer transition-colors"
                 >
-                  <td className="p-4 whitespace-nowrap">
-                    <span className={cn("px-2 py-1 text-xs rounded border font-mono uppercase font-bold", getSeverityColor(f.severity))}>
-                      {f.severity}
+                  <td className="py-2.5 px-4">
+                    <div className="flex items-center gap-2">
+                      <div className={cn("w-2 h-2 shrink-0", getSeverityDot(f.severity))} />
+                      <span className="text-[11px] uppercase text-chalk">{f.severity}</span>
+                    </div>
+                  </td>
+                  <td className="py-2.5 px-4 text-[11px] text-chalk truncate max-w-[200px]">{f.title}</td>
+                  <td className="py-2.5 px-4 text-[11px] text-ash">{f.cweIdentifier}</td>
+                  <td className="py-2.5 px-4 text-[11px] font-bold text-chalk text-right">{f.cvssScore.toFixed(1)}</td>
+                  <td className="py-2.5 px-4">
+                    <span className="border border-steel bg-obsidian px-1.5 py-0.5 text-[9px] uppercase text-ash">
+                      {f.status}
                     </span>
                   </td>
-                  <td className="p-4 font-medium">{f.title}</td>
-                  <td className="p-4 font-mono text-ash">{f.cweIdentifier}</td>
-                  <td className="p-4 font-mono font-bold">{f.cvssScore.toFixed(1)}</td>
-                  <td className="p-4 font-mono text-xs text-ash">{f.status}</td>
-                  <td className="p-4 text-ash">{new Date(f.updatedAt).toLocaleDateString()}</td>
+                  <td className="py-2.5 px-4 text-[11px] text-ash/80">{new Date(f.updatedAt).toLocaleDateString()}</td>
                 </tr>
               ))}
             </tbody>

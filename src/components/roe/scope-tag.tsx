@@ -1,5 +1,3 @@
-import { X } from 'lucide-react';
-
 interface ScopeTagProps {
   label: string;
   onRemove: () => void;
@@ -7,15 +5,15 @@ interface ScopeTagProps {
 
 export function ScopeTag({ label, onRemove }: ScopeTagProps) {
   return (
-    <span className="inline-flex items-center gap-1.5 bg-graphite text-frost font-mono text-sm px-2 py-0.5 rounded border border-slate-surface">
+    <span className="inline-flex items-center gap-2 bg-gunmetal text-chalk font-mono text-[11px] px-2 py-0.5 border border-steel uppercase">
       {label}
       <button
         type="button"
         onClick={onRemove}
-        className="text-ash hover:text-kill transition-colors focus:outline-none"
+        className="text-ash hover:text-kill transition-colors focus:outline-none flex items-center justify-center w-3 h-3"
         aria-label={`Remove ${label}`}
       >
-        <X className="w-3.5 h-3.5" />
+        <span className="text-[14px] leading-none mb-0.5">×</span>
       </button>
     </span>
   );

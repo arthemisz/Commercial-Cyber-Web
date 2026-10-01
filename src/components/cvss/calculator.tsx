@@ -67,10 +67,10 @@ const getSeverity = (score: number) => {
 const getSeverityColor = (severity: string) => {
   switch (severity) {
     case 'Critical': return 'text-kill font-bold';
-    case 'High': return 'text-kill/80 font-bold';
-    case 'Medium': return 'text-caution font-bold';
-    case 'Low': return 'text-signal font-bold';
-    default: return 'text-ash';
+    case 'High': return 'text-amber font-bold';
+    case 'Medium': return 'text-cyan font-bold';
+    case 'Low': return 'text-ash font-bold';
+    default: return 'text-steel';
   }
 };
 
@@ -114,18 +114,18 @@ export function CVSSCalculator({ initialVector, onChange }: Props) {
   };
 
   const MetricGroup = ({ label, metric, options }: { label: string, metric: keyof CVSSVector, options: { label: string, val: string }[] }) => (
-    <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-      <div className="text-ash text-sm w-40 font-mono">{label}</div>
-      <div className="flex flex-wrap gap-1">
+    <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3 pb-3 border-b border-steel/50 last:border-0 last:mb-0 last:pb-0">
+      <div className="text-ash text-[10px] w-40 font-mono uppercase tracking-wider">{label}</div>
+      <div className="flex flex-wrap gap-2">
         {options.map(opt => (
           <button
             key={opt.val}
             onClick={() => updateMetric(metric, opt.val)}
             className={cn(
-              "px-3 py-1 text-sm font-mono rounded transition-colors",
+              "px-3 py-1.5 text-[10px] font-mono border transition-colors uppercase",
               vector[metric] === opt.val 
-                ? "bg-signal text-white" 
-                : "bg-graphite hover:bg-signal/20 text-frost"
+                ? "bg-amber border-amber text-obsidian font-bold" 
+                : "bg-obsidian border-steel hover:bg-gunmetal text-chalk"
             )}
           >
             {opt.label} ({opt.val})
@@ -136,9 +136,12 @@ export function CVSSCalculator({ initialVector, onChange }: Props) {
   );
 
   return (
-    <div className="bg-slate-surface p-6 rounded-lg border border-graphite/50 w-full max-w-3xl">
-      <h3 className="text-frost text-lg font-mono mb-4">CVSS v3.1 Calculator</h3>
-      <div className="space-y-4">
+    <div className="bg-bunker p-6 border border-steel w-full max-w-3xl font-mono">
+      <div className="text-[10px] text-ash uppercase tracking-[0.2em] mb-6">
+        CVSS_V3.1_CALCULATOR
+      </div>
+      
+      <div className="space-y-1 bg-obsidian border border-steel p-4 mb-6">
         <MetricGroup label="Attack Vector" metric="AV" options={[{ label: 'Network', val: 'N' }, { label: 'Adjacent', val: 'A' }, { label: 'Local', val: 'L' }, { label: 'Physical', val: 'P' }]} />
         <MetricGroup label="Attack Complexity" metric="AC" options={[{ label: 'Low', val: 'L' }, { label: 'High', val: 'H' }]} />
         <MetricGroup label="Privileges Required" metric="PR" options={[{ label: 'None', val: 'N' }, { label: 'Low', val: 'L' }, { label: 'High', val: 'H' }]} />
@@ -149,24 +152,22 @@ export function CVSSCalculator({ initialVector, onChange }: Props) {
         <MetricGroup label="Availability" metric="A" options={[{ label: 'None', val: 'N' }, { label: 'Low', val: 'L' }, { label: 'High', val: 'H' }]} />
       </div>
 
-      <div className="mt-8 pt-6 border-t border-graphite">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-          <div>
-            <div className="text-ash text-sm mb-1">Vector String</div>
-            <div className="font-mono bg-graphite/50 p-2 rounded text-frost text-sm break-all">
-              {vectorString}
-            </div>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pt-2 border-t border-steel">
+        <div className="flex-1 min-w-[50%]">
+          <div className="text-[10px] text-ash uppercase tracking-wider mb-2">Vector String</div>
+          <div className="border border-steel bg-obsidian p-3 text-chalk text-[10px] break-all uppercase">
+            {vectorString}
           </div>
-          <div className="text-right">
-            <div className="text-ash text-sm mb-1">Base Score</div>
-            <div className="flex items-baseline gap-3">
-              <span className={cn("text-5xl font-mono tracking-tighter", getSeverityColor(severity))}>
-                {score.toFixed(1)}
-              </span>
-              <span className={cn("text-xl font-bold uppercase tracking-wide", getSeverityColor(severity))}>
-                {severity}
-              </span>
-            </div>
+        </div>
+        <div className="text-right shrink-0">
+          <div className="text-[10px] text-ash uppercase tracking-wider mb-2">Base Score</div>
+          <div className="flex items-baseline gap-3 justify-end border border-steel bg-obsidian p-3">
+            <span className={cn("text-4xl font-bold tracking-tighter leading-none", getSeverityColor(severity))}>
+              {score.toFixed(1)}
+            </span>
+            <span className={cn("text-xs font-bold uppercase tracking-widest", getSeverityColor(severity))}>
+              {severity}
+            </span>
           </div>
         </div>
       </div>

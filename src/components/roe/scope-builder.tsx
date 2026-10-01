@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { ScopeTag } from './scope-tag';
-import { CheckCircle2, ChevronRight, ChevronLeft } from 'lucide-react';
 
 interface ScopeBuilderProps {
   engagementId: string;
@@ -11,32 +10,31 @@ interface ScopeBuilderProps {
   onComplete: (hash: string) => void;
 }
 
-// Inline toggle component
 function Toggle({ checked, onChange, label, warning }: { checked: boolean, onChange: (c: boolean) => void, label: string, warning?: string }) {
   return (
-    <div className="flex items-start space-x-4 py-3 border-b border-slate-surface last:border-0">
+    <div className="flex items-start space-x-4 py-3 border-b border-steel last:border-0">
       <button
         type="button"
         role="switch"
         aria-checked={checked}
         onClick={() => onChange(!checked)}
         className={cn(
-          "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-signal focus:ring-offset-2 focus:ring-offset-void",
-          checked ? "bg-signal" : "bg-graphite"
+          "relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer border border-steel transition-colors duration-200 ease-in-out focus:outline-none focus:border-amber",
+          checked ? "bg-amber" : "bg-obsidian"
         )}
       >
         <span
           aria-hidden="true"
           className={cn(
-            "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
-            checked ? "translate-x-5" : "translate-x-0"
+            "pointer-events-none inline-block h-4 w-4 transform bg-bunker shadow ring-0 transition duration-200 ease-in-out",
+            checked ? "translate-x-4" : "translate-x-0"
           )}
         />
       </button>
       <div className="flex flex-col">
-        <span className="text-sm font-medium text-frost font-mono">{label}</span>
+        <span className="text-[11px] font-mono text-chalk uppercase tracking-wide">{label}</span>
         {checked && warning && (
-          <span className="text-xs text-caution mt-1 flex items-center">
+          <span className="text-[10px] text-amber mt-1 font-mono flex items-center">
             <span className="mr-1">⚠</span> {warning}
           </span>
         )}
@@ -45,7 +43,6 @@ function Toggle({ checked, onChange, label, warning }: { checked: boolean, onCha
   );
 }
 
-// Utility to generate a pseudo-hash on the client
 async function generateHash(data: string) {
   const msgUint8 = new TextEncoder().encode(data);
   const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
@@ -56,19 +53,16 @@ async function generateHash(data: string) {
 export function ScopeBuilder({ engagementId, initialScope, onComplete }: ScopeBuilderProps) {
   const [step, setStep] = useState(1);
   
-  // Step 1 State
   const [inScopeList, setInScopeList] = useState<string[]>(initialScope?.inScope || []);
   const [outOfScopeList, setOutOfScopeList] = useState<string[]>(initialScope?.outOfScope || []);
   const [inputValue, setInputValue] = useState('');
   const [outInputValue, setOutInputValue] = useState('');
 
-  // Step 2 State
   const [startTime, setStartTime] = useState(initialScope?.startTime || '');
   const [endTime, setEndTime] = useState(initialScope?.endTime || '');
   const [timezone, setTimezone] = useState(initialScope?.timezone || 'UTC');
   const [rateLimit, setRateLimit] = useState(initialScope?.rateLimit || '10');
 
-  // Step 3 State
   const [permissions, setPermissions] = useState({
     dos: false,
     phishing: false,
@@ -78,7 +72,6 @@ export function ScopeBuilder({ engagementId, initialScope, onComplete }: ScopeBu
     wireless: false
   });
 
-  // Step 4 State
   const [hash, setHash] = useState('');
   const [isSigned, setIsSigned] = useState(false);
   const [signTime, setSignTime] = useState('');
@@ -115,28 +108,27 @@ export function ScopeBuilder({ engagementId, initialScope, onComplete }: ScopeBu
     onComplete(computedHash);
   };
 
-  const steps = ['Target Scope', 'Testing Window', 'Permissions', 'Review & Sign'];
+  const steps = ['TARGET SCOPE', 'TESTING WINDOW', 'PERMISSIONS', 'REVIEW & SIGN'];
 
   return (
-    <div className="max-w-3xl mx-auto bg-void border border-slate-surface rounded-xl p-6 shadow-xl">
-      {/* Progress Header */}
-      <div className="flex items-center justify-between mb-8">
+    <div className="max-w-3xl mx-auto bg-bunker border border-steel p-6 font-mono">
+      <div className="flex items-center justify-between mb-8 border-b border-steel pb-6">
         {steps.map((label, index) => {
           const s = index + 1;
           const isActive = step === s;
           const isPast = step > s;
           return (
-            <div key={label} className="flex flex-col items-center relative z-10">
+            <div key={label} className="flex flex-col items-center">
               <div className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center font-mono text-sm border-2 transition-colors",
-                isActive ? "border-signal text-signal bg-signal/10" :
-                isPast ? "border-verified text-verified bg-verified/10" :
-                "border-slate-surface text-ash"
+                "w-6 h-6 flex items-center justify-center text-[10px] border mb-2",
+                isActive ? "border-amber bg-amber/10 text-amber" :
+                isPast ? "border-verified bg-verified/10 text-verified" :
+                "border-steel bg-obsidian text-ash"
               )}>
-                {isPast ? <CheckCircle2 className="w-4 h-4" /> : s}
+                {s}
               </div>
               <span className={cn(
-                "text-xs font-mono mt-2 absolute top-full w-24 text-center -ml-8",
+                "text-[9px] uppercase tracking-wider",
                 isActive ? "text-frost" : "text-ash"
               )}>
                 {label}
@@ -144,62 +136,62 @@ export function ScopeBuilder({ engagementId, initialScope, onComplete }: ScopeBu
             </div>
           );
         })}
-        {/* Connecting lines */}
-        <div className="absolute top-10 left-8 right-8 h-0.5 bg-slate-surface -z-10 hidden sm:block" />
       </div>
 
-      <div className="mt-12 mb-8 min-h-[300px]">
+      <div className="mb-8 min-h-[300px]">
         {step === 1 && (
           <div className="space-y-6">
-            <h3 className="text-lg font-mono text-frost">Define Target Scope</h3>
-            <p className="text-sm text-ash mb-4">Add CIDR ranges, domains, URLs, or repositories.</p>
+            <div>
+              <h3 className="text-xs uppercase tracking-wider text-frost mb-1">Define Target Scope</h3>
+              <p className="text-[10px] text-ash">Add CIDR ranges, domains, URLs, or repositories.</p>
+            </div>
             
             <div className="space-y-2">
-              <label className="text-sm font-mono text-frost block">In-Scope Targets</label>
+              <label className="text-[10px] text-chalk uppercase block">In-Scope Targets</label>
               <div className="flex gap-2">
                 <input 
                   type="text" 
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && addScope(inScopeList, setInScopeList, inputValue, setInputValue)}
-                  placeholder="e.g. 192.168.1.0/24 or *.example.com"
-                  className="flex-1 bg-graphite border border-slate-surface rounded px-3 py-2 text-frost font-mono text-sm focus:border-signal focus:ring-1 focus:ring-signal outline-none"
+                  placeholder="192.168.1.0/24 OR *.EXAMPLE.COM"
+                  className="flex-1 bg-obsidian border border-steel px-3 py-2 text-chalk text-[11px] placeholder:text-ash/50 focus:border-amber focus:outline-none transition-colors"
                 />
                 <button 
                   onClick={() => addScope(inScopeList, setInScopeList, inputValue, setInputValue)}
-                  className="px-4 py-2 bg-slate-surface text-frost rounded font-mono text-sm hover:bg-graphite transition-colors"
+                  className="px-4 py-2 bg-gunmetal border border-steel text-amber text-[11px] uppercase hover:bg-steel transition-colors"
                 >
-                  Add
+                  ADD
                 </button>
               </div>
-              <div className="flex flex-wrap gap-2 mt-3 p-3 bg-graphite/50 rounded min-h-[60px] border border-slate-surface/50">
-                {inScopeList.length === 0 && <span className="text-ash text-sm italic">No targets defined</span>}
+              <div className="flex flex-wrap gap-2 mt-3 p-3 bg-obsidian border border-steel min-h-[60px]">
+                {inScopeList.length === 0 && <span className="text-ash text-[10px] uppercase">No targets defined</span>}
                 {inScopeList.map((item, i) => (
                   <ScopeTag key={i} label={item} onRemove={() => removeScope(inScopeList, setInScopeList, i)} />
                 ))}
               </div>
             </div>
 
-            <div className="space-y-2 pt-4">
-              <label className="text-sm font-mono text-frost block">Explicitly Excluded Targets</label>
+            <div className="space-y-2 pt-4 border-t border-steel">
+              <label className="text-[10px] text-chalk uppercase block">Explicitly Excluded Targets</label>
               <div className="flex gap-2">
                 <input 
                   type="text" 
                   value={outInputValue}
                   onChange={(e) => setOutInputValue(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && addScope(outOfScopeList, setOutOfScopeList, outInputValue, setOutInputValue)}
-                  placeholder="e.g. 192.168.1.50 or production-db.example.com"
-                  className="flex-1 bg-graphite border border-slate-surface rounded px-3 py-2 text-frost font-mono text-sm focus:border-signal focus:ring-1 focus:ring-signal outline-none"
+                  placeholder="192.168.1.50 OR PROD-DB.EXAMPLE.COM"
+                  className="flex-1 bg-obsidian border border-steel px-3 py-2 text-chalk text-[11px] placeholder:text-ash/50 focus:border-amber focus:outline-none transition-colors"
                 />
                 <button 
                   onClick={() => addScope(outOfScopeList, setOutOfScopeList, outInputValue, setOutInputValue)}
-                  className="px-4 py-2 bg-slate-surface text-frost rounded font-mono text-sm hover:bg-graphite transition-colors"
+                  className="px-4 py-2 bg-gunmetal border border-steel text-amber text-[11px] uppercase hover:bg-steel transition-colors"
                 >
-                  Add
+                  ADD
                 </button>
               </div>
-              <div className="flex flex-wrap gap-2 mt-3 p-3 bg-graphite/50 rounded min-h-[60px] border border-slate-surface/50">
-                {outOfScopeList.length === 0 && <span className="text-ash text-sm italic">No exclusions defined</span>}
+              <div className="flex flex-wrap gap-2 mt-3 p-3 bg-obsidian border border-steel min-h-[60px]">
+                {outOfScopeList.length === 0 && <span className="text-ash text-[10px] uppercase">No exclusions defined</span>}
                 {outOfScopeList.map((item, i) => (
                   <ScopeTag key={i} label={item} onRemove={() => removeScope(outOfScopeList, setOutOfScopeList, i)} />
                 ))}
@@ -210,33 +202,36 @@ export function ScopeBuilder({ engagementId, initialScope, onComplete }: ScopeBu
 
         {step === 2 && (
           <div className="space-y-6">
-            <h3 className="text-lg font-mono text-frost">Testing Window & Limits</h3>
+            <div>
+              <h3 className="text-xs uppercase tracking-wider text-frost mb-1">Testing Window & Limits</h3>
+              <p className="text-[10px] text-ash">Define engagement constraints.</p>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-obsidian p-4 border border-steel">
               <div className="space-y-2">
-                <label className="text-sm font-mono text-ash block">Start Time</label>
+                <label className="text-[10px] uppercase text-ash block">Start Time</label>
                 <input 
                   type="datetime-local" 
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
-                  className="w-full bg-graphite border border-slate-surface rounded px-3 py-2 text-frost font-mono text-sm focus:border-signal outline-none"
+                  className="w-full bg-gunmetal border border-steel px-3 py-2 text-chalk text-[11px] focus:border-amber focus:outline-none"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-mono text-ash block">End Time</label>
+                <label className="text-[10px] uppercase text-ash block">End Time</label>
                 <input 
                   type="datetime-local" 
                   value={endTime}
                   onChange={(e) => setEndTime(e.target.value)}
-                  className="w-full bg-graphite border border-slate-surface rounded px-3 py-2 text-frost font-mono text-sm focus:border-signal outline-none"
+                  className="w-full bg-gunmetal border border-steel px-3 py-2 text-chalk text-[11px] focus:border-amber focus:outline-none"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-mono text-ash block">Timezone</label>
+                <label className="text-[10px] uppercase text-ash block">Timezone</label>
                 <select 
                   value={timezone}
                   onChange={(e) => setTimezone(e.target.value)}
-                  className="w-full bg-graphite border border-slate-surface rounded px-3 py-2 text-frost font-mono text-sm focus:border-signal outline-none"
+                  className="w-full bg-gunmetal border border-steel px-3 py-2 text-chalk text-[11px] focus:border-amber focus:outline-none"
                 >
                   <option value="UTC">UTC</option>
                   <option value="America/New_York">Eastern Time (ET)</option>
@@ -246,13 +241,13 @@ export function ScopeBuilder({ engagementId, initialScope, onComplete }: ScopeBu
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-mono text-ash block">Max Requests/Second</label>
+                <label className="text-[10px] uppercase text-ash block">Max Requests/Second</label>
                 <input 
                   type="number" 
                   min="1"
                   value={rateLimit}
                   onChange={(e) => setRateLimit(e.target.value)}
-                  className="w-full bg-graphite border border-slate-surface rounded px-3 py-2 text-frost font-mono text-sm focus:border-signal outline-none"
+                  className="w-full bg-gunmetal border border-steel px-3 py-2 text-chalk text-[11px] focus:border-amber focus:outline-none"
                 />
               </div>
             </div>
@@ -260,11 +255,13 @@ export function ScopeBuilder({ engagementId, initialScope, onComplete }: ScopeBu
         )}
 
         {step === 3 && (
-          <div className="space-y-4">
-            <h3 className="text-lg font-mono text-frost mb-4">Attack Vector Permissions</h3>
-            <p className="text-sm text-ash mb-6">Select authorized testing methodologies. Deny by default.</p>
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xs uppercase tracking-wider text-frost mb-1">Attack Vector Permissions</h3>
+              <p className="text-[10px] text-ash">Select authorized testing methodologies. Deny by default.</p>
+            </div>
             
-            <div className="bg-graphite/30 rounded-lg p-4 border border-slate-surface space-y-2">
+            <div className="bg-obsidian border border-steel p-4 space-y-2">
               <Toggle 
                 label="Denial of Service (DoS)" 
                 checked={permissions.dos} 
@@ -304,40 +301,39 @@ export function ScopeBuilder({ engagementId, initialScope, onComplete }: ScopeBu
 
         {step === 4 && (
           <div className="space-y-6">
-            <h3 className="text-lg font-mono text-frost">Review & Sign Rules of Engagement</h3>
+            <h3 className="text-xs uppercase tracking-wider text-frost mb-4">Review & Sign Rules of Engagement</h3>
             
-            <div className="bg-graphite/40 border border-slate-surface rounded-lg p-5 space-y-6 font-mono text-sm">
+            <div className="bg-obsidian border border-steel p-5 space-y-6 text-[11px]">
               <div>
-                <h4 className="text-ash mb-2 uppercase tracking-wider text-xs">Scope Highlights</h4>
-                <p className="text-frost"><span className="text-verified">{inScopeList.length}</span> In-Scope Items</p>
-                <p className="text-frost"><span className="text-kill">{outOfScopeList.length}</span> Excluded Items</p>
+                <h4 className="text-ash mb-2 uppercase tracking-wider text-[10px]">Scope Highlights</h4>
+                <p className="text-chalk"><span className="text-verified font-bold">{inScopeList.length}</span> IN-SCOPE ITEMS</p>
+                <p className="text-chalk"><span className="text-kill font-bold">{outOfScopeList.length}</span> EXCLUDED ITEMS</p>
               </div>
               
-              <div>
-                <h4 className="text-ash mb-2 uppercase tracking-wider text-xs">Window</h4>
-                <p className="text-frost">{startTime || 'Not set'} to {endTime || 'Not set'} ({timezone})</p>
-                <p className="text-frost">Rate Limit: {rateLimit} req/sec</p>
+              <div className="border-t border-steel pt-4">
+                <h4 className="text-ash mb-2 uppercase tracking-wider text-[10px]">Window</h4>
+                <p className="text-chalk">{startTime || 'NOT SET'} TO {endTime || 'NOT SET'} ({timezone})</p>
+                <p className="text-chalk">RATE LIMIT: {rateLimit} REQ/SEC</p>
               </div>
 
-              <div>
-                <h4 className="text-ash mb-2 uppercase tracking-wider text-xs">Authorized Vectors</h4>
+              <div className="border-t border-steel pt-4">
+                <h4 className="text-ash mb-2 uppercase tracking-wider text-[10px]">Authorized Vectors</h4>
                 <div className="flex flex-wrap gap-2 mt-1">
                   {Object.entries(permissions).filter(([_, v]) => v).map(([k]) => (
-                    <span key={k} className="bg-signal/20 text-signal px-2 py-0.5 rounded text-xs">{k}</span>
+                    <span key={k} className="border border-amber/30 bg-amber/10 text-amber px-2 py-0.5 text-[9px] uppercase">{k}</span>
                   ))}
-                  {Object.values(permissions).every(v => !v) && <span className="text-ash">None authorized</span>}
+                  {Object.values(permissions).every(v => !v) && <span className="text-ash uppercase text-[10px]">None authorized</span>}
                 </div>
               </div>
 
               {isSigned && (
-                <div className="mt-4 pt-4 border-t border-slate-surface">
-                  <h4 className="text-ash mb-2 uppercase tracking-wider text-xs">Digital Signature (SHA-256)</h4>
-                  <div className="bg-graphite p-3 rounded text-signal break-all text-xs border border-signal/30">
+                <div className="mt-4 pt-4 border-t border-steel">
+                  <h4 className="text-ash mb-2 uppercase tracking-wider text-[10px]">Digital Signature (SHA-256)</h4>
+                  <div className="bg-gunmetal p-3 text-verified break-all text-[10px] border border-verified/30">
                     {hash}
                   </div>
-                  <div className="flex items-center gap-2 mt-3 text-verified">
-                    <CheckCircle2 className="w-5 h-5" />
-                    <span>Signed on {new Date(signTime).toLocaleString()}</span>
+                  <div className="flex items-center gap-2 mt-3 text-verified text-[10px] uppercase">
+                    <span>SIGNED: {new Date(signTime).toLocaleString()}</span>
                   </div>
                 </div>
               )}
@@ -346,34 +342,33 @@ export function ScopeBuilder({ engagementId, initialScope, onComplete }: ScopeBu
         )}
       </div>
 
-      {/* Navigation Footer */}
-      <div className="flex justify-between items-center pt-4 border-t border-slate-surface">
+      <div className="flex justify-between items-center pt-4 border-t border-steel">
         <button
           onClick={() => setStep(Math.max(1, step - 1))}
           disabled={step === 1 || isSigned}
-          className="flex items-center gap-2 px-4 py-2 font-mono text-sm text-ash hover:text-frost disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 border border-steel bg-obsidian text-[11px] text-ash hover:text-frost hover:bg-gunmetal disabled:opacity-50 disabled:cursor-not-allowed transition-colors uppercase"
         >
-          <ChevronLeft className="w-4 h-4" /> Back
+          BACK
         </button>
         
         {step < 4 ? (
           <button
             onClick={() => setStep(Math.min(4, step + 1))}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-surface hover:bg-graphite text-frost rounded font-mono text-sm transition-colors border border-slate-surface"
+            className="px-4 py-2 bg-gunmetal border border-steel text-frost text-[11px] uppercase hover:bg-steel transition-colors"
           >
-            Next <ChevronRight className="w-4 h-4" />
+            NEXT
           </button>
         ) : (
           !isSigned ? (
             <button
               onClick={handleSign}
-              className="px-6 py-2 bg-signal hover:bg-signal/90 text-void font-bold rounded font-mono text-sm transition-colors uppercase tracking-wider"
+              className="px-6 py-2 bg-amber text-obsidian font-bold text-[11px] hover:bg-amber/90 transition-colors uppercase tracking-wider border border-amber"
             >
-              Sign Rules of Engagement
+              SIGN RULES OF ENGAGEMENT
             </button>
           ) : (
-            <span className="text-verified font-mono text-sm uppercase flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4" /> Finalized
+            <span className="text-verified text-[11px] uppercase flex items-center gap-2 border border-verified/30 bg-verified/10 px-4 py-2">
+              FINALIZED
             </span>
           )
         )}

@@ -13,11 +13,12 @@ const SEVERITIES = ['Critical', 'High', 'Medium', 'Low', 'Info'];
 
 const getSeverityColors = (severity: string) => {
   switch (severity.toLowerCase()) {
-    case 'critical': return 'bg-kill text-white';
-    case 'high': return 'bg-kill/80 text-white';
-    case 'medium': return 'bg-caution text-void';
-    case 'low': return 'bg-signal text-void';
-    default: return 'bg-ash text-void';
+    case 'critical': return 'bg-kill';
+    case 'high': return 'bg-amber';
+    case 'medium': return 'bg-cyan';
+    case 'low': return 'bg-ash';
+    case 'info': return 'bg-cobalt';
+    default: return 'bg-steel';
   }
 };
 
@@ -39,9 +40,13 @@ export function SeverityBreakdown({ findings }: Props) {
   const total = findings.length;
 
   return (
-    <div className="bg-slate-surface rounded-lg border border-graphite/50 p-4 font-mono">
-      <div className="text-sm text-ash mb-3">Severity Breakdown ({total} Total)</div>
-      <div className="flex gap-2 w-full h-4 rounded overflow-hidden mb-4 bg-void">
+    <div className="bg-bunker border border-steel p-5 font-mono">
+      <div className="text-[10px] uppercase tracking-[0.2em] text-ash mb-4 flex justify-between">
+        <span>SEVERITY_BREAKDOWN</span>
+        <span>TOTAL: {total}</span>
+      </div>
+      
+      <div className="flex w-full h-3 mb-6 bg-obsidian border border-steel">
         {total > 0 ? SEVERITIES.map(sev => {
           const count = counts[sev];
           if (count === 0) return null;
@@ -49,21 +54,22 @@ export function SeverityBreakdown({ findings }: Props) {
           return (
             <div 
               key={sev} 
-              className={cn("h-full", getSeverityColors(sev))}
+              className={cn("h-full border-r border-obsidian last:border-0", getSeverityColors(sev))}
               style={{ width: `${percentage}%` }}
               title={`${sev}: ${count}`}
             />
           );
         }) : (
-          <div className="w-full h-full bg-graphite" />
+          <div className="w-full h-full bg-obsidian" />
         )}
       </div>
-      <div className="grid grid-cols-5 gap-2 text-center text-xs">
+      
+      <div className="grid grid-cols-5 gap-2 text-center">
         {SEVERITIES.map(sev => (
-          <div key={sev} className="flex flex-col items-center">
-            <span className={cn("inline-block w-3 h-3 rounded-full mb-1", getSeverityColors(sev))} />
-            <span className="text-ash">{sev.charAt(0)}</span>
-            <span className="font-bold text-frost">{counts[sev]}</span>
+          <div key={sev} className="flex flex-col items-center border border-steel bg-obsidian py-2">
+            <span className={cn("w-2 h-2 mb-2", getSeverityColors(sev))} />
+            <span className="text-[10px] text-ash uppercase mb-1">{sev.charAt(0)}</span>
+            <span className="font-bold text-frost text-sm">{counts[sev]}</span>
           </div>
         ))}
       </div>
