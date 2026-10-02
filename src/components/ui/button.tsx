@@ -6,19 +6,20 @@ import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal/50 disabled:pointer-events-none disabled:opacity-50 motion-reduce:transition-none",
+  "inline-flex font-mono items-center justify-center whitespace-nowrap font-medium text-sm transition-all duration-150 border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber disabled:pointer-events-none disabled:opacity-40",
   {
     variants: {
       variant: {
-        primary: "bg-signal text-frost hover:bg-signal/90",
-        danger: "bg-kill text-frost hover:bg-kill/90",
-        ghost: "hover:bg-slate-surface hover:text-frost text-ash",
-        outline: "border border-graphite bg-transparent hover:bg-slate-surface text-frost",
+        primary: "bg-amber text-obsidian border-amber hover:bg-frost hover:text-obsidian hover:border-frost font-semibold",
+        secondary: "bg-transparent text-chalk border-steel hover:bg-steel hover:text-frost",
+        danger: "bg-kill/10 text-kill border-kill/40 hover:bg-kill hover:text-frost hover:border-kill",
+        ghost: "bg-transparent text-ash border-transparent hover:text-frost hover:bg-gunmetal",
+        tactical: "bg-cobalt text-frost border-cobalt hover:bg-cobalt/80",
       },
       size: {
-        sm: "h-8 px-3 text-xs",
-        md: "h-10 px-4 py-2",
-        lg: "h-12 px-8",
+        sm: "h-7 px-2.5 text-xs",
+        md: "h-9 px-4 text-sm",
+        lg: "h-11 px-6 text-sm",
       },
     },
     defaultVariants: {
@@ -32,22 +33,20 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
-  loading?: boolean
-  icon?: React.ReactNode
+  isLoading?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, loading, icon, children, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, isLoading, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
-        disabled={loading || props.disabled}
+        disabled={isLoading || props.disabled}
         {...props}
       >
-        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" />}
-        {!loading && icon && <span className="mr-2">{icon}</span>}
+        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         {children}
       </Comp>
     )

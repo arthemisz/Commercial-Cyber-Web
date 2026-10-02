@@ -1,37 +1,71 @@
 import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
-export type StatusType = "active" | "halted" | "pending" | "idle"
+const statusVariants = cva("w-2 h-2", {
+  variants: {
+    status: {
+      online: "bg-verified",
+      offline: "bg-ash",
+      warning: "bg-amber",
+      error: "bg-kill",
+      active: "bg-cyan",
+    }
+  },
+  defaultVariants: {
+    status: "online",
+  },
+})
 
-export interface StatusIndicatorProps extends React.HTMLAttributes<HTMLDivElement> {
-  status: StatusType
+export interface StatusIndicatorProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof statusVariants> {
   label?: string
+  blink?: boolean
 }
 
-const statusColors: Record<StatusType, { dot: string; bg: string }> = {
-  active: { dot: "bg-verified", bg: "bg-verified/20" },
-  halted: { dot: "bg-kill", bg: "bg-kill/20" },
-  pending: { dot: "bg-caution", bg: "bg-caution/20" },
-  idle: { dot: "bg-ash", bg: "bg-ash/20" },
-}
-
-export function StatusIndicator({ status, label, className, ...props }: StatusIndicatorProps) {
-  const colors = statusColors[status]
-
-  return (
-    <div className={cn("inline-flex items-center gap-2", className)} {...props}>
-      <div className="relative flex h-2.5 w-2.5 items-center justify-center">
-        {status !== "idle" && (
-          <span
-            className={cn(
-              "absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 motion-reduce:animate-none",
-              colors.dot
-            )}
-          />
+const StatusIndicator = React.forwardRef<HTMLDivElement, StatusIndicatorProps>(
+  ({ className, status, blink, label, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "inline-flex items-center gap-2 border border-steel px-2 py-1 bg-bunker",
+          className
         )}
-        <span className={cn("relative inline-flex h-2.5 w-2.5 rounded-full", colors.dot)} />
+        {...props}
+      >
+        <div className="relative flex items-center justify-center">
+          {blink && (
+            <div 
+              className={cn(
+                "absolute w-2 h-2", 
+                statusVariants({ status })
+              )}
+              style={{ animation: 'sharpBlink 1s step-end infinite' }}
+            />
+          )}
+          <div className={cn(statusVariants({ status }))} />
+        </div>
+        
+        {label && (
+          <span className="font-mono uppercase text-[11px] text-frost tracking-wider">
+            {label}
+          </span>
+        )}
+        
+        {blink && (
+          <style>{`
+            @keyframes sharpBlink {
+              0%, 100% { opacity: 1; }
+              50% { opacity: 0; }
+            }
+          `}</style>
+        )}
       </div>
-      {label && <span className="text-sm font-medium text-frost">{label}</span>}
-    </div>
-  )
-}
+    )
+  }
+)
+StatusIndicator.displayName = "StatusIndicator"
+
+export { StatusIndicator, statusVariants }
