@@ -119,6 +119,12 @@ export default function FindingsEditorPage() {
             >
               View Findings Tracker →
             </Link>
+            <Link
+              href="/consultant"
+              className="px-4 py-2 border border-steel hover:border-chalk text-ash hover:text-frost text-xs font-mono uppercase tracking-wider transition-colors"
+            >
+              Consultant Console
+            </Link>
           </div>
         </div>
       ) : (
