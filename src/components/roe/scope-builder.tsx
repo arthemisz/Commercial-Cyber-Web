@@ -105,6 +105,17 @@ export function ScopeBuilder({ engagementId, initialScope, onComplete }: ScopeBu
     setHash(computedHash);
     setIsSigned(true);
     setSignTime(new Date().toISOString());
+
+    try {
+      await fetch(`/api/engagements/${engagementId}/sign-roe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ hash: computedHash, role: 'client' }),
+      });
+    } catch (err) {
+      console.warn('Sign RoE API sync note:', err);
+    }
+
     onComplete(computedHash);
   };
 
