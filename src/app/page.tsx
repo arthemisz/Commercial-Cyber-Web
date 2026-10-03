@@ -309,27 +309,27 @@ export default function Home() {
             <h4 className="text-[10px] font-mono text-ash uppercase tracking-wider mb-1">
               OPERATIONS
             </h4>
-            <Link href="#" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Architecture</Link>
-            <Link href="#" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Penetration Testing</Link>
-            <Link href="#" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Red Teaming</Link>
+            <Link href="#architecture" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Architecture</Link>
+            <Link href="/client/engagements" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Penetration Testing</Link>
+            <Link href="/consultant" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Red Teaming</Link>
           </div>
 
           <div className="flex flex-col gap-3">
             <h4 className="text-[10px] font-mono text-ash uppercase tracking-wider mb-1">
               COMPLIANCE
             </h4>
-            <Link href="#" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">SARIF Exports</Link>
-            <Link href="#" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Escrow Terms</Link>
-            <Link href="#" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Privacy Policy</Link>
+            <Link href="#architecture" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">SARIF Exports</Link>
+            <Link href="#architecture" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Escrow Terms</Link>
+            <Link href="#architecture" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Privacy Policy</Link>
           </div>
 
           <div className="flex flex-col gap-3">
             <h4 className="text-[10px] font-mono text-ash uppercase tracking-wider mb-1">
               CONNECT
             </h4>
-            <Link href="#" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Console Login</Link>
-            <Link href="#" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Consultant Portal</Link>
-            <Link href="#" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Contact Dispatch</Link>
+            <Link href="/login" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Console Login</Link>
+            <Link href="/consultant" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Consultant Portal</Link>
+            <a href="mailto:dispatch@cyberthink.io" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Contact Dispatch</a>
           </div>
         </div>
 
