@@ -27,8 +27,4 @@ CyberConsult is a marketplace and consultation platform connecting enterprise cl
 
 ## Getting Started
 
-### Prerequisites
 
-* Node.js (v18.0.0 or higher)
-* PostgreSQL instance (local or hosted)
-* npm, yarn, or pnpm
