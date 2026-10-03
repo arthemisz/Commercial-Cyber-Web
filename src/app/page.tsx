@@ -8,58 +8,14 @@ import {
   Trash2,
   Lock,
 } from "lucide-react";
+import { PublicHeader } from "@/components/public/public-header";
+import { PublicFooter } from "@/components/public/public-footer";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-obsidian text-chalk selection:bg-amber selection:text-obsidian flex flex-col font-sans">
       {/* 1. NAVIGATION BAR */}
-      <header className="sticky top-0 z-50 h-14 bg-obsidian border-b border-steel flex items-center justify-between px-6">
-        <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-3 group">
-            <Image
-              src="/Logo.jpg"
-              alt="Cyberthink Solutions"
-              width={28}
-              height={28}
-              className="w-7 h-7 object-contain"
-            />
-            <span className="font-mono font-bold tracking-[0.2em] text-frost text-sm group-hover:text-amber transition-colors">
-              CYBERTHINK
-            </span>
-            <span className="text-ash text-[10px]">—</span>
-            <span className="text-ash text-[10px] tracking-[0.15em] uppercase">
-              SOLUTIONS
-            </span>
-          </Link>
-        </div>
-
-        <nav className="hidden md:flex items-center gap-8">
-          {["Architecture", "Operations", "Compliance", "Escrow"].map((item) => (
-            <Link
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="font-mono text-[11px] uppercase tracking-wider text-ash hover:text-amber transition-colors"
-            >
-              {item}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <Link
-            href="/consultants"
-            className="hidden sm:inline-block border border-steel text-ash hover:border-amber hover:text-amber text-[11px] font-mono px-3 py-1.5 transition-colors"
-          >
-            Apply as Consultant
-          </Link>
-          <Link
-            href="/console"
-            className="bg-amber text-obsidian font-mono text-[11px] font-semibold px-4 py-1.5 hover:bg-frost transition-colors"
-          >
-            Enter Console →
-          </Link>
-        </div>
-      </header>
+      <PublicHeader />
 
       <main className="flex-1 flex flex-col">
         {/* 2. HERO SECTION */}
@@ -294,59 +250,7 @@ export default function Home() {
       </main>
 
       {/* 5. FOOTER */}
-      <footer className="bg-obsidian border-t border-steel py-8 px-6">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="flex flex-col">
-            <span className="font-mono font-bold tracking-[0.2em] text-frost text-sm">
-              CYBERTHINK
-            </span>
-            <span className="mt-2 text-[10px] text-ash font-mono">
-              © 2024 Cyberthink Solutions
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <h4 className="text-[10px] font-mono text-ash uppercase tracking-wider mb-1">
-              OPERATIONS
-            </h4>
-            <Link href="#architecture" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Architecture</Link>
-            <Link href="/client/engagements" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Penetration Testing</Link>
-            <Link href="/consultant" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Red Teaming</Link>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <h4 className="text-[10px] font-mono text-ash uppercase tracking-wider mb-1">
-              COMPLIANCE
-            </h4>
-            <Link href="#architecture" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">SARIF Exports</Link>
-            <Link href="#architecture" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Escrow Terms</Link>
-            <Link href="#architecture" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Privacy Policy</Link>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <h4 className="text-[10px] font-mono text-ash uppercase tracking-wider mb-1">
-              CONNECT
-            </h4>
-            <Link href="/login" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Console Login</Link>
-            <Link href="/consultant" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Consultant Portal</Link>
-            <a href="mailto:dispatch@cyberthink.io" className="text-[11px] font-mono text-ash hover:text-amber transition-colors">Contact Dispatch</a>
-          </div>
-        </div>
-
-        <div className="max-w-[1400px] mx-auto border-t border-steel pt-4 mt-8 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-4 text-[10px] font-mono text-ash/50">
-            <span>BUILD v2.4.11-stable</span>
-            <span className="hidden sm:inline-block">|</span>
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 bg-verified"></span>
-              <span>SYSTEMS ONLINE</span>
-            </div>
-          </div>
-          <span className="text-[10px] font-mono text-ash/50">
-            {new Date().toISOString().split('T')[0]}T{new Date().toISOString().split('T')[1].substring(0, 8)}Z
-          </span>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }
