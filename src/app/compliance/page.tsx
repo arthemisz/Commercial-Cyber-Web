@@ -23,82 +23,136 @@ import { PublicFooter } from '@/components/public/public-footer';
 import { StatusIndicator } from '@/components/ui/status-indicator';
 import { cn } from '@/lib/utils';
 
-export default function CompliancePage() {
-  const [selectedFramework, setSelectedFramework] = useState<'SOC2' | 'ISO27001' | 'PCIDSS' | 'NIST' | 'HIPAA'>('SOC2');
-  const [downloadNotice, setDownloadNotice] = useState<string | null>(null);
+interface FrameworkControl {
+  code: string;
+  title: string;
+  desc: string;
+}
 
-  const frameworks = {
-    SOC2: {
-      name: 'SOC 2 Type II (AICPA Trust Services Criteria)',
-      controls: [
-        { code: 'CC6.1 / CC6.2', title: 'Logical Access Controls', desc: 'Consultant access restricted by cryptographic key pairs and bounded WireGuard tunnels.' },
-        { code: 'CC6.6 / CC6.8', title: 'Vulnerability Management & Defense', desc: 'Identified vulnerabilities mapped to CVSS v3.1 / v4.0 metrics with full remediation verification.' },
-        { code: 'CC7.1 / CC7.2', title: 'Threat Monitoring & Anomaly Detection', desc: 'Real-time WAL streaming and continuous audit logging for all operational probe events.' },
-        { code: 'CC8.1', title: 'Change Governance & Verification', desc: 'Retest workflow verifies committed fixes before final milestone escrow disbursal.' }
-      ]
-    },
-    ISO27001: {
-      name: 'ISO/IEC 27001:2022 Information Security',
-      controls: [
-        { code: 'Control A.5.24', title: 'Information Security Incident Management', desc: 'Sub-100ms emergency kill switch enables instant mitigation if adverse conditions arise.' },
-        { code: 'Control A.8.8', title: 'Management of Technical Vulnerabilities', desc: 'Structured defect ingestion adhering to MITRE CWE taxonomy and structured SARIF exports.' },
-        { code: 'Control A.8.29', title: 'Security Testing in Development and Acceptance', desc: 'Independent offensive validation executed within digitally signed, non-repudiated RoE parameters.' },
-        { code: 'Control A.8.31', title: 'Separation of Development, Test, and Production', desc: 'Rigorous out-of-scope exemptions preventing destructive testing on critical production datastores.' }
-      ]
-    },
-    PCIDSS: {
-      name: 'PCI-DSS v4.0 Requirement 11.3',
-      controls: [
-        { code: 'Req 11.3.1', title: 'External Penetration Testing', desc: 'Annual and post-major-change perimeter testing backed by cryptographic scope attestation.' },
-        { code: 'Req 11.3.2', title: 'Internal Network Penetration Testing', desc: 'Segmentation validation testing proving strict network layer isolation around cardholder data.' },
-        { code: 'Req 11.3.3', title: 'Remediation Retest Verification', desc: 'Milestone escrow structures require verified patch retests before consultant payout authorization.' }
-      ]
-    },
-    NIST: {
-      name: 'NIST SP 800-53 Rev. 5 / FedRAMP Moderate & High',
-      controls: [
-        { code: 'CA-8', title: 'Penetration Testing Standard', desc: 'Independent red team assessment adhering strictly to authorized rules of engagement.' },
-        { code: 'AU-2 / AU-9', title: 'Audit Generation & Protection of Audit Information', desc: 'Immutable WORM audit ledger complying with RFC 3161 trusted timestamping.' },
-        { code: 'SC-28', title: 'Protection of Information at Rest', desc: 'AWS KMS envelope encryption with AES-256-GCM ensuring evidence zero-leakage.' }
-      ]
-    },
-    HIPAA: {
-      name: 'HIPAA Security Rule 45 CFR § 164.308',
-      controls: [
-        { code: '§ 164.308(a)(1)', title: 'Security Management Process - Risk Analysis', desc: 'Comprehensive technical attack surface vulnerability discovery without exposing ePHI.' },
-        { code: '§ 164.308(a)(8)', title: 'Periodic Evaluation & Technical Audits', desc: 'Verifiable technical compliance documentation suitable for OCR and third-party auditors.' },
-        { code: '§ 164.312(a)(2)(iv)', title: 'Encryption and Decryption (ePHI Protection)', desc: 'Zero-knowledge client-side encryption and 60-day ephemeral auto-shredding TTLs.' }
+interface FrameworkDefinition {
+  name: string;
+  controls: FrameworkControl[];
+}
+
+const FRAMEWORKS: Record<'SOC2' | 'ISO27001' | 'PCIDSS' | 'NIST' | 'HIPAA', FrameworkDefinition> = {
+  SOC2: {
+    name: 'SOC 2 Type II (AICPA Trust Services Criteria)',
+    controls: [
+      { code: 'CC6.1 / CC6.2', title: 'Logical Access Controls', desc: 'Consultant access restricted by cryptographic key pairs and bounded WireGuard tunnels.' },
+      { code: 'CC6.6 / CC6.8', title: 'Vulnerability Management & Defense', desc: 'Identified vulnerabilities mapped to CVSS v3.1 / v4.0 metrics with full remediation verification.' },
+      { code: 'CC7.1 / CC7.2', title: 'Threat Monitoring & Anomaly Detection', desc: 'Real-time WAL streaming and continuous audit logging for all operational probe events.' },
+      { code: 'CC8.1', title: 'Change Governance & Verification', desc: 'Retest workflow verifies committed fixes before final milestone escrow disbursal.' }
+    ]
+  },
+  ISO27001: {
+    name: 'ISO/IEC 27001:2022 Information Security',
+    controls: [
+      { code: 'Control A.5.24', title: 'Information Security Incident Management', desc: 'Sub-100ms emergency kill switch enables instant mitigation if adverse conditions arise.' },
+      { code: 'Control A.8.8', title: 'Management of Technical Vulnerabilities', desc: 'Structured defect ingestion adhering to MITRE CWE taxonomy and structured SARIF exports.' },
+      { code: 'Control A.8.29', title: 'Security Testing in Development and Acceptance', desc: 'Independent offensive validation executed within digitally signed, non-repudiated RoE parameters.' },
+      { code: 'Control A.8.31', title: 'Separation of Development, Test, and Production', desc: 'Rigorous out-of-scope exemptions preventing destructive testing on critical production datastores.' }
+    ]
+  },
+  PCIDSS: {
+    name: 'PCI-DSS v4.0 Requirement 11.3',
+    controls: [
+      { code: 'Req 11.3.1', title: 'External Penetration Testing', desc: 'Annual and post-major-change perimeter testing backed by cryptographic scope attestation.' },
+      { code: 'Req 11.3.2', title: 'Internal Network Penetration Testing', desc: 'Segmentation validation testing proving strict network layer isolation around cardholder data.' },
+      { code: 'Req 11.3.3', title: 'Remediation Retest Verification', desc: 'Milestone escrow structures require verified patch retests before consultant payout authorization.' }
+    ]
+  },
+  NIST: {
+    name: 'NIST SP 800-53 Rev. 5 / FedRAMP Moderate & High',
+    controls: [
+      { code: 'CA-8', title: 'Penetration Testing Standard', desc: 'Independent red team assessment adhering strictly to authorized rules of engagement.' },
+      { code: 'AU-2 / AU-9', title: 'Audit Generation & Protection of Audit Information', desc: 'Immutable WORM audit ledger complying with RFC 3161 trusted timestamping.' },
+      { code: 'SC-28', title: 'Protection of Information at Rest', desc: 'AWS KMS envelope encryption with AES-256-GCM ensuring evidence zero-leakage.' }
+    ]
+  },
+  HIPAA: {
+    name: 'HIPAA Security Rule 45 CFR § 164.308',
+    controls: [
+      { code: '§ 164.308(a)(1)', title: 'Security Management Process - Risk Analysis', desc: 'Comprehensive technical attack surface vulnerability discovery without exposing ePHI.' },
+      { code: '§ 164.308(a)(8)', title: 'Periodic Evaluation & Technical Audits', desc: 'Verifiable technical compliance documentation suitable for OCR and third-party auditors.' },
+      { code: '§ 164.312(a)(2)(iv)', title: 'Encryption and Decryption (ePHI Protection)', desc: 'Zero-knowledge client-side encryption and 60-day ephemeral auto-shredding TTLs.' }
+    ]
+  }
+};
+
+type FrameworkKey = keyof typeof FRAMEWORKS;
+
+const SAMPLE_SARIF_JSON = `{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/cos02/schemas/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Cyberthink Offensive Platform",
+          "semanticVersion": "2.4.11",
+          "rules": [
+            {
+              "id": "CWE-89",
+              "name": "SQL Injection in Login Portal",
+              "properties": {
+                "cvssScore": 9.8,
+                "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+                "severity": "CRITICAL"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CWE-89",
+          "level": "error",
+          "message": { "text": "Time-based blind SQL injection detected on /api/v1/auth endpoint." }
+        }
       ]
     }
-  };
+  ]
+}`;
+
+export default function CompliancePage() {
+  const [selectedFramework, setSelectedFramework] = useState<FrameworkKey>('SOC2');
+  const [downloadNotice, setDownloadNotice] = useState<string | null>(null);
+
+  const activeFramework = FRAMEWORKS[selectedFramework] || FRAMEWORKS.SOC2;
 
   const handleDownloadSpec = () => {
-    const spec = {
-      title: 'Cyberthink Solutions Platform Compliance & GRC Attestation',
-      version: '2024.4',
-      date: new Date().toISOString(),
-      standards: ['SOC 2 Type II', 'ISO/IEC 27001:2022', 'PCI-DSS 4.0 Req 11.3', 'NIST SP 800-53', 'HIPAA'],
-      securityArchitecture: {
-        roeIntegrity: 'SHA-256 Canonical Canonicalization + Dual ECDSA Signatures',
-        auditTrail: 'RFC 3161 Append-Only WORM Ledger',
-        encryptionAtRest: 'AWS KMS Envelope Encryption (AES-256-GCM)',
-        ephemeralStorage: 'Enforced 30/60/90-Day TTL Cryptographic Shredding',
-        telemetry: 'PostgreSQL WAL Stream Broadcast (<100ms)',
-      }
-    };
+    if (typeof window === 'undefined') return;
 
-    const blob = new Blob([JSON.stringify(spec, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `cyberthink-compliance-spec-${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    try {
+      const spec = {
+        title: 'Cyberthink Solutions Platform Compliance & GRC Attestation',
+        version: '2024.4',
+        date: new Date().toISOString(),
+        standards: ['SOC 2 Type II', 'ISO/IEC 27001:2022', 'PCI-DSS 4.0 Req 11.3', 'NIST SP 800-53', 'HIPAA'],
+        securityArchitecture: {
+          roeIntegrity: 'SHA-256 Canonical Serialization + Dual ECDSA Signatures',
+          auditTrail: 'RFC 3161 Append-Only WORM Ledger',
+          encryptionAtRest: 'AWS KMS Envelope Encryption (AES-256-GCM)',
+          ephemeralStorage: 'Enforced 30/60/90-Day TTL Cryptographic Shredding',
+          telemetry: 'PostgreSQL WAL Stream Broadcast (<100ms)',
+        }
+      };
 
-    setDownloadNotice('Compliance Specification manifest exported to JSON.');
-    setTimeout(() => setDownloadNotice(null), 4000);
+      const blob = new Blob([JSON.stringify(spec, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `cyberthink-compliance-spec-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      setDownloadNotice('Compliance Specification manifest exported to JSON.');
+      setTimeout(() => setDownloadNotice(null), 4000);
+    } catch (err) {
+      console.error('Failed to export compliance specification:', err);
+    }
   };
 
   return (
@@ -185,7 +239,7 @@ export default function CompliancePage() {
         )}
 
         {/* 2. FRAMEWORK MAPPING MATRIX */}
-        <section id="frameworks" className="py-20 px-6 border-b border-steel bg-obsidian">
+        <section id="frameworks" className="relative py-20 px-6 border-b border-steel bg-obsidian">
           <span className="absolute top-4 left-6 text-[10px] font-mono text-ash/40 uppercase tracking-[0.3em]">
             SEC_GRC_02 // REGULATORY_CROSSWALK
           </span>
@@ -202,7 +256,7 @@ export default function CompliancePage() {
 
             {/* Framework Selector Tabs */}
             <div className="flex flex-wrap border border-steel bg-bunker p-1 font-mono text-xs mb-8">
-              {(Object.keys(frameworks) as Array<keyof typeof frameworks>).map((key) => (
+              {(Object.keys(FRAMEWORKS) as Array<FrameworkKey>).map((key) => (
                 <button
                   key={key}
                   onClick={() => setSelectedFramework(key)}
@@ -222,11 +276,11 @@ export default function CompliancePage() {
             <div className="bg-bunker border border-steel p-6 md:p-8 font-mono">
               <div className="border-b border-steel pb-4 mb-6">
                 <span className="text-[10px] text-amber uppercase tracking-wider font-semibold">Active Mapping</span>
-                <h3 className="text-lg font-bold text-frost mt-1">{frameworks[selectedFramework].name}</h3>
+                <h3 className="text-lg font-bold text-frost mt-1">{activeFramework.name}</h3>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {frameworks[selectedFramework].controls.map((ctrl, i) => (
+                {activeFramework.controls.map((ctrl, i) => (
                   <div key={i} className="p-4 bg-obsidian border border-steel flex flex-col justify-between">
                     <div>
                       <span className="px-2 py-0.5 bg-steel/30 text-amber text-[10px] border border-steel inline-block mb-2">
@@ -247,8 +301,12 @@ export default function CompliancePage() {
         </section>
 
         {/* 3. FOUR CORE COMPLIANCE PILLARS */}
-        <section id="worm-audit" className="py-20 px-6 border-b border-steel bg-bunker">
-          <div className="max-w-[1400px] mx-auto">
+        <section id="worm-audit" className="relative py-20 px-6 border-b border-steel bg-bunker">
+          <span className="absolute top-4 left-6 text-[10px] font-mono text-ash/40 uppercase tracking-[0.3em]">
+            SEC_GRC_03 // GOVERNANCE_PILLARS
+          </span>
+
+          <div className="max-w-[1400px] mx-auto mt-6">
             <div className="mb-12">
               <h2 className="text-3xl font-bold text-frost font-mono tracking-tight">
                 Cryptographic Governance Architecture
@@ -327,8 +385,12 @@ export default function CompliancePage() {
         </section>
 
         {/* 4. SARIF 2.1.0 INTEGRATION */}
-        <section id="sarif" className="py-20 px-6 border-b border-steel bg-obsidian">
-          <div className="max-w-[1400px] mx-auto">
+        <section id="sarif" className="relative py-20 px-6 border-b border-steel bg-obsidian">
+          <span className="absolute top-4 left-6 text-[10px] font-mono text-ash/40 uppercase tracking-[0.3em]">
+            SEC_GRC_04 // PIPELINE_INGESTION
+          </span>
+
+          <div className="max-w-[1400px] mx-auto mt-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               <div className="lg:col-span-6">
                 <span className="text-[10px] font-mono text-amber uppercase tracking-wider font-semibold">
@@ -371,38 +433,8 @@ export default function CompliancePage() {
                   <span>SAMPLE // SARIF_PAYLOAD.JSON</span>
                   <span>OASIS v2.1.0</span>
                 </div>
-                <pre className="text-chalk overflow-x-auto p-2 bg-obsidian border border-steel max-h-80 leading-snug">
-{`{
-  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/...",
-  "version": "2.1.0",
-  "runs": [
-    {
-      "tool": {
-        "driver": {
-          "name": "Cyberthink Offensive Platform",
-          "rules": [
-            {
-              "id": "CWE-89",
-              "name": "SQL Injection in Login Portal",
-              "properties": {
-                "cvssScore": 9.8,
-                "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/...",
-                "severity": "CRITICAL"
-              }
-            }
-          ]
-        }
-      },
-      "results": [
-        {
-          "ruleId": "CWE-89",
-          "level": "error",
-          "message": { "text": "Time-based blind SQL injection..." }
-        }
-      ]
-    }
-  ]
-}`}
+                <pre className="text-chalk overflow-x-auto p-3 bg-obsidian border border-steel max-h-80 leading-snug whitespace-pre font-mono text-xs">
+                  {SAMPLE_SARIF_JSON}
                 </pre>
               </div>
             </div>

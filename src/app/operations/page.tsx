@@ -232,7 +232,7 @@ export default function OperationsPage() {
         </section>
 
         {/* 3. SCOPE BOUNDING & METHODOLOGY */}
-        <section id="scope-bounding" className="py-20 px-6 border-b border-steel bg-bunker">
+        <section id="scope-bounding" className="relative py-20 px-6 border-b border-steel bg-bunker">
           <span className="absolute top-4 left-6 text-[10px] font-mono text-ash/40 uppercase tracking-[0.3em]">
             SEC_OPS_03 // SCOPE_BOUNDING
           </span>

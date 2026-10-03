@@ -113,7 +113,7 @@ export default function EscrowPage() {
         </section>
 
         {/* 2. INTERACTIVE ESCROW CALCULATOR */}
-        <section id="calculator" className="py-20 px-6 border-b border-steel bg-obsidian">
+        <section id="calculator" className="relative py-20 px-6 border-b border-steel bg-obsidian">
           <span className="absolute top-4 left-6 text-[10px] font-mono text-ash/40 uppercase tracking-[0.3em]">
             SEC_FIN_02 // FINANCIAL_MODELER
           </span>
