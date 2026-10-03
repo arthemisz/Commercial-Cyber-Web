@@ -10,15 +10,22 @@ const STATUS_STEPS = [
   { id: 'COMPLETED', label: 'Completed' },
 ];
 
+const STATUS_MAP: Record<string, string> = {
+  'ROE_PENDING_SIGNATURES': 'ROE_PENDING',
+  'FUNDS_IN_ESCROW': 'FUNDS_ESCROWED',
+  'ABORTED_KILL_SWITCH': 'ABORTED',
+};
+
 interface StatusTimelineProps {
   currentStatus: string;
   timestamps: Record<string, string | null>;
 }
 
 export function StatusTimeline({ currentStatus, timestamps }: StatusTimelineProps) {
-  const isAborted = currentStatus === 'ABORTED';
-  const currentIndex = STATUS_STEPS.findIndex(s => s.id === currentStatus);
-  const activeIndex = isAborted ? STATUS_STEPS.length : currentIndex;
+  const normalized = STATUS_MAP[currentStatus] || currentStatus;
+  const isAborted = normalized === 'ABORTED';
+  const currentIndex = STATUS_STEPS.findIndex(s => s.id === normalized);
+  const activeIndex = isAborted ? STATUS_STEPS.length : (currentIndex === -1 ? 0 : currentIndex);
 
   return (
     <div className="border border-steel bg-bunker p-5 font-mono">
@@ -71,7 +78,7 @@ export function StatusTimeline({ currentStatus, timestamps }: StatusTimelineProp
         {isAborted && (
           <div className="relative flex items-center group hover:bg-gunmetal/50 p-2 -mx-2 transition-colors min-h-[40px]">
              <div className="text-[10px] font-mono text-ash/60 w-40 shrink-0">
-                {timestamps['ABORTED'] ? new Date(timestamps['ABORTED']!).toLocaleString() : 'N/A'}
+                {(timestamps['ABORTED'] || timestamps['ABORTED_KILL_SWITCH']) ? new Date((timestamps['ABORTED'] || timestamps['ABORTED_KILL_SWITCH'])!).toLocaleString() : 'N/A'}
              </div>
              <div className="relative flex items-center justify-center w-6 shrink-0 z-10 self-stretch">
                 <div className="w-2 h-2 bg-kill z-10" />
