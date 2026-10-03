@@ -28,6 +28,9 @@ export default function OnboardPage() {
     }))
   }
 
+  const [isActivating, setIsActivating] = useState(false)
+  const [activated, setActivated] = useState(false)
+
   const handleStripeConnect = () => {
     setTimeout(() => {
       setStripeConnected(true)
@@ -35,8 +38,14 @@ export default function OnboardPage() {
   }
 
   const handleSubmit = async () => {
-    alert('Security Operator profile activated!')
-    router.push('/consultant')
+    setIsActivating(true)
+    setTimeout(() => {
+      setIsActivating(false)
+      setActivated(true)
+      setTimeout(() => {
+        router.push('/consultant')
+      }, 1500)
+    }, 800)
   }
 
   return (
@@ -245,18 +254,27 @@ export default function OnboardPage() {
                 </div>
               </div>
 
+              {activated && (
+                <div className="p-3 bg-verified/10 border border-verified/30 text-verified font-mono text-xs flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>Operator profile activated! Initializing session and dispatching to console...</span>
+                </div>
+              )}
+
               <div className="flex justify-between pt-4 border-t border-steel">
                 <button 
                   onClick={() => setStep(2)}
-                  className="border border-steel text-ash px-6 py-2.5 font-mono text-xs uppercase tracking-wider hover:text-frost hover:border-chalk transition-colors"
+                  disabled={isActivating || activated}
+                  className="border border-steel text-ash px-6 py-2.5 font-mono text-xs uppercase tracking-wider hover:text-frost hover:border-chalk transition-colors disabled:opacity-50"
                 >
                   ← Back
                 </button>
                 <button 
                   onClick={handleSubmit}
-                  className="bg-amber text-obsidian px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider hover:bg-frost transition-colors"
+                  disabled={isActivating || activated}
+                  className="bg-amber text-obsidian px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider hover:bg-frost transition-colors disabled:opacity-50 flex items-center gap-2"
                 >
-                  Confirm & Initialize Operator Session →
+                  {isActivating ? 'ACTIVATING OPERATOR...' : activated ? 'OPERATOR ACTIVATED ✓' : 'Confirm & Initialize Operator Session →'}
                 </button>
               </div>
             </div>
