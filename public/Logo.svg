@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="50 35 500 500" width="500" height="500" role="img" aria-label="Hackers Cut logo">
+  <title>Hackers Cut Association</title>
+
+  <defs>
+    <!-- cut-outs so the lock body is see-through where the keyhole and glitch slice are -->
+    <mask id="lockcut" maskUnits="userSpaceOnUse" x="244" y="236" width="112" height="86">
+      <rect x="244" y="236" width="112" height="86" rx="8" fill="#fff"/>
+      <rect x="244" y="270" width="112" height="5" fill="#000"/>
+      <g fill="none" stroke="#000" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+        <path d="M270 252 L292 267 L270 282" transform="translate(0 6)"/>
+        <path d="M302 292 H332"/>
+      </g>
+    </mask>
+  </defs>
+
+  <!-- Emblem group, positioned to maximize typography scale -->
+  <g transform="translate(0, -48)">
+    <!-- glitch hexagon (offset ghost layer) -->
+    <polygon points="310,96 440,171 440,321 310,396 180,321 180,171"
+             fill="none" stroke="#FFB000" stroke-width="6" stroke-opacity="0.55"
+             stroke-dasharray="90 24 40 24 120 24"/>
+
+    <!-- main hexagon -->
+    <polygon points="300,100 430,175 430,325 300,400 170,325 170,175"
+             fill="none" stroke="#FF6A00" stroke-width="12" stroke-linejoin="miter"/>
+
+    <!-- hex corner nodes -->
+    <g fill="#FF6A00">
+      <rect x="292" y="92" width="16" height="16"/>
+      <rect x="422" y="167" width="16" height="16"/>
+      <rect x="422" y="317" width="16" height="16"/>
+      <rect x="292" y="392" width="16" height="16"/>
+      <rect x="162" y="317" width="16" height="16"/>
+      <rect x="162" y="167" width="16" height="16"/>
+    </g>
+
+    <!-- open (cracked) padlock shackle -->
+    <path d="M268 236 V204 A32 32 0 0 1 332 204 V214"
+          fill="none" stroke="#FF6A00" stroke-width="16"/>
+
+    <!-- padlock body with transparent prompt keyhole >_ -->
+    <rect x="244" y="236" width="112" height="86" fill="#FF6A00" mask="url(#lockcut)"/>
+  </g>
+
+  <!-- Enlarged high-visibility wordmark -->
+  <text x="300" y="428" text-anchor="middle"
+        font-family="'JetBrains Mono', 'Segoe UI', Consolas, 'SF Mono', monospace, sans-serif"
+        font-size="68" font-weight="900" letter-spacing="4" fill="#FF6A00"
+        stroke="#FF6A00" stroke-width="1.5" paint-order="stroke fill">HACKERS CUT</text>
+
+  <text x="300" y="484" text-anchor="middle"
+        font-family="'JetBrains Mono', 'Segoe UI', Consolas, 'SF Mono', monospace, sans-serif"
+        font-size="50" font-weight="900" letter-spacing="7" fill="#FFB000"
+        stroke="#FFB000" stroke-width="1.2" paint-order="stroke fill">ASSOCIATION</text>
+
+  <!-- Underline bar with glitch break -->
+  <g fill="#FF6A00">
+    <rect x="85" y="512" width="185" height="8"/>
+    <rect x="285" y="512" width="30" height="8" opacity="0.6"/>
+    <rect x="330" y="512" width="185" height="8"/>
+  </g>
+</svg>

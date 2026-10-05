@@ -1,6 +1,8 @@
 import * as React from "react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { ChevronDown, UserSquare } from "lucide-react"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 
 export interface NavItem {
   title: string
@@ -31,13 +33,25 @@ export function SidebarNav({ className, groups, user, ...props }: SidebarNavProp
       {...props}
     >
       {/* Brand Section */}
-      <div className="flex flex-col items-start justify-center h-16 px-6 border-b border-steel">
-        <span className="font-mono font-bold tracking-[0.2em] text-frost">
-          CYBERTHINK
-        </span>
-        <span className="text-[10px] text-ash font-mono mt-0.5">
-          SOLUTIONS
-        </span>
+      <div className="flex items-center justify-between h-16 px-6 border-b border-steel">
+        <div className="flex items-center gap-3">
+          <Image
+            src="/Logo.svg"
+            alt="Cyberthink Solutions"
+            width={40}
+            height={40}
+            className="w-10 h-10 object-contain shrink-0"
+          />
+          <div className="flex flex-col items-start justify-center">
+            <span className="font-mono font-bold tracking-[0.2em] text-frost">
+              CYBERTHINK
+            </span>
+            <span className="text-[10px] text-ash font-mono mt-0.5">
+              SOLUTIONS
+            </span>
+          </div>
+        </div>
+        <ThemeToggle size="sm" />
       </div>
 
       {/* Navigation Items */}

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export function PublicHeader() {
   const pathname = usePathname();
@@ -23,11 +24,11 @@ export function PublicHeader() {
       <div className="flex items-center gap-3">
         <Link href="/" className="flex items-center gap-3 group">
           <Image
-            src="/Logo.jpg"
+            src="/Logo.svg"
             alt="Cyberthink Solutions"
-            width={28}
-            height={28}
-            className="w-7 h-7 object-contain"
+            width={44}
+            height={44}
+            className="w-10 h-10 sm:w-11 sm:h-11 object-contain shrink-0"
           />
           <span className="font-mono font-bold tracking-[0.2em] text-frost text-sm group-hover:text-amber transition-colors">
             CYBERTHINK
@@ -62,6 +63,8 @@ export function PublicHeader() {
 
       {/* Action Buttons */}
       <div className="flex items-center gap-3">
+        <ThemeToggle size="sm" />
+
         <Link
           href="/consultant/onboard"
           className="hidden sm:inline-block border border-steel text-ash hover:border-amber hover:text-amber text-[11px] font-mono px-3 py-1.5 transition-colors uppercase tracking-wider"
@@ -105,7 +108,13 @@ export function PublicHeader() {
               </Link>
             ))}
           </nav>
-          <div className="pt-3 border-t border-steel flex flex-col gap-2">
+          
+          <div className="pt-3 border-t border-steel flex items-center justify-between">
+            <span className="font-mono text-xs uppercase tracking-wider text-ash">Theme</span>
+            <ThemeToggle variant="segmented" />
+          </div>
+
+          <div className="pt-2 border-t border-steel flex flex-col gap-2">
             <Link
               href="/consultant/onboard"
               onClick={() => setMobileMenuOpen(false)}

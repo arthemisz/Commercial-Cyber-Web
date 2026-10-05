@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export function PublicFooter() {
   return (
@@ -6,8 +8,14 @@ export function PublicFooter() {
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-2 flex flex-col justify-between">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-1.5 h-1.5 bg-amber"></span>
+            <div className="flex items-center gap-3 mb-3">
+              <Image
+                src="/analyst-luxury.svg"
+                alt="Cyberthink Solutions"
+                width={40}
+                height={40}
+                className="w-10 h-10 object-contain shrink-0"
+              />
               <span className="font-mono font-bold tracking-[0.2em] text-frost text-sm">
                 CYBERTHINK SOLUTIONS
               </span>
@@ -81,6 +89,8 @@ export function PublicFooter() {
 
       <div className="max-w-[1400px] mx-auto border-t border-steel pt-4 mt-8 flex flex-wrap items-center justify-between gap-4 font-mono text-[10px] text-ash/50">
         <div className="flex items-center gap-4">
+          <ThemeToggle variant="segmented" />
+          <span className="hidden sm:inline-block">|</span>
           <span>BUILD v2.4.11-stable</span>
           <span className="hidden sm:inline-block">|</span>
           <div className="flex items-center gap-1.5">
