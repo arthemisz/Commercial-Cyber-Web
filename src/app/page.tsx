@@ -226,7 +226,7 @@ export default function Home() {
           <div className="max-w-[1400px] mx-auto flex items-center gap-8 mt-6">
             <div className="border border-steel p-1.5 flex-shrink-0 bg-obsidian">
               <Image 
-                src="/analyst-luxury.jpg" 
+                src="/analyst-luxury.svg" 
                 alt="Cyberthink Analyst" 
                 width={120} 
                 height={120} 
