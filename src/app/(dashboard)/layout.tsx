@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { Activity, FileText, Settings, Key, LogOut, Menu, X, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -43,14 +45,23 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const renderNavContent = () => (
     <div className="flex flex-col h-full bg-bunker">
       <div className="p-6 border-b border-steel flex items-center justify-between">
-        <div>
-          <div className="font-mono font-bold tracking-[0.2em] text-frost text-sm">
-            CYBERTHINK
+        <Link href="/" className="flex items-center gap-3 group">
+          <Image
+            src="/Logo.svg"
+            alt="Cyberthink Solutions"
+            width={40}
+            height={40}
+            className="w-10 h-10 object-contain shrink-0"
+          />
+          <div>
+            <div className="font-mono font-bold tracking-[0.2em] text-frost text-sm group-hover:text-amber transition-colors">
+              CYBERTHINK
+            </div>
+            <div className="text-[9px] text-ash tracking-[0.15em] font-mono mt-0.5">
+              SOLUTIONS
+            </div>
           </div>
-          <div className="text-[9px] text-ash tracking-[0.15em] font-mono mt-1">
-            SOLUTIONS
-          </div>
-        </div>
+        </Link>
         {mobileMenuOpen && (
           <button
             onClick={() => setMobileMenuOpen(false)}
@@ -113,13 +124,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="text-xs font-mono text-chalk truncate max-w-[120px]">operator@cyberthink.io</div>
             <div className="text-[9px] font-mono text-ash mt-1 uppercase tracking-wider">COMMAND LEVEL 5</div>
           </div>
-          <button 
-            onClick={handleSignOut}
-            className="p-2 text-ash hover:text-kill transition-colors"
-            title="Sign Out"
-          >
-            <LogOut className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-1.5">
+            <ThemeToggle size="sm" />
+            <button 
+              onClick={handleSignOut}
+              className="p-1.5 text-ash hover:text-kill transition-colors"
+              title="Sign Out"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -162,9 +176,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <span className="font-mono text-[10px] text-frost tracking-wider">WAL SYNC ACTIVE</span>
             </div>
           </div>
-          <Link href="/" className="font-mono text-[10px] text-ash hover:text-amber transition-colors uppercase tracking-wider">
-            PUBLIC PORTAL →
-          </Link>
+          <div className="flex items-center gap-3">
+            <ThemeToggle size="sm" />
+            <Link href="/" className="font-mono text-[10px] text-ash hover:text-amber transition-colors uppercase tracking-wider">
+              PUBLIC PORTAL →
+            </Link>
+          </div>
         </header>
 
         <main className="bg-obsidian flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
