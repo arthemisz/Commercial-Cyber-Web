@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
@@ -66,9 +67,18 @@ export default function MfaVerifyPage() {
   return (
     <div className="bg-bunker border border-steel flex flex-col shadow-2xl">
       <div className="p-6 border-b border-steel flex justify-between items-start">
-        <div>
-          <h1 className="font-mono font-bold tracking-[0.2em] text-frost text-xl mb-1">MFA_CHALLENGE</h1>
-          <p className="text-[10px] font-mono text-ash tracking-wider">SECONDARY AUTHENTICATION REQUIRED</p>
+        <div className="flex items-center gap-3">
+          <Image
+            src="/Logo.svg"
+            alt="Cyberthink Solutions"
+            width={40}
+            height={40}
+            className="w-10 h-10 object-contain shrink-0"
+          />
+          <div>
+            <h1 className="font-mono font-bold tracking-[0.2em] text-frost text-xl mb-0.5">MFA_CHALLENGE</h1>
+            <p className="text-[10px] font-mono text-ash tracking-wider">SECONDARY AUTHENTICATION REQUIRED</p>
+          </div>
         </div>
         <div className="text-[10px] font-mono border border-steel px-2 py-1 bg-obsidian">
           <span className="text-ash">TTL: </span>
