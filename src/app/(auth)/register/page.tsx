@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils';
 import { Shield } from 'lucide-react';
@@ -76,9 +77,18 @@ export default function RegisterPage() {
 
   return (
     <div className="bg-bunker border border-steel flex flex-col shadow-2xl">
-      <div className="p-6 border-b border-steel">
-        <h1 className="font-mono font-bold tracking-[0.2em] text-frost text-xl mb-1">CYBERTHINK</h1>
-        <p className="text-[10px] font-mono text-ash tracking-wider">IDENTITY PROVISIONING MODULE</p>
+      <div className="p-6 border-b border-steel flex items-center gap-3">
+        <Image
+          src="/Logo.svg"
+          alt="Cyberthink Solutions"
+          width={40}
+          height={40}
+          className="w-10 h-10 object-contain shrink-0"
+        />
+        <div>
+          <h1 className="font-mono font-bold tracking-[0.2em] text-frost text-xl mb-0.5">CYBERTHINK</h1>
+          <p className="text-[10px] font-mono text-ash tracking-wider">IDENTITY PROVISIONING MODULE</p>
+        </div>
       </div>
 
       <div className="p-6">
