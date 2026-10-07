@@ -1,23 +1,23 @@
 @import 'tailwindcss';
 
-@theme {
+@theme inline {
   /* === TACTICAL EDITORIAL PALETTE === */
-  --color-obsidian: #0b0d10;
-  --color-bunker: #12141a;
-  --color-gunmetal: #1a1d25;
-  --color-steel: #282c35;
-  --color-graphite: #3a3f4b;
-  --color-ash: #6b7280;
-  --color-chalk: #d1d5db;
-  --color-frost: #f0f0f2;
-  --color-paper: #F5F5F7;
+  --color-obsidian: var(--color-obsidian);
+  --color-bunker: var(--color-bunker);
+  --color-gunmetal: var(--color-gunmetal);
+  --color-steel: var(--color-steel);
+  --color-graphite: var(--color-graphite);
+  --color-ash: var(--color-ash);
+  --color-chalk: var(--color-chalk);
+  --color-frost: var(--color-frost);
+  --color-paper: var(--color-paper);
   
-  /* Functional accents — ONLY for interactive/active states */
-  --color-amber: #FF9900;
-  --color-cobalt: #2563EB;
-  --color-cyan: #06B6D4;
-  --color-verified: #22C55E;
-  --color-kill: #EF4444;
+  /* Functional accents — interactive / state markers */
+  --color-amber: var(--color-amber);
+  --color-cobalt: var(--color-cobalt);
+  --color-cyan: var(--color-cyan);
+  --color-verified: var(--color-verified);
+  --color-kill: var(--color-kill);
   
   /* Typography */
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -26,10 +26,79 @@
 }
 
 :root {
+  /* === DARK TACTICAL PALETTE (DEFAULT) === */
+  --color-obsidian: #0b0d10;
+  --color-bunker: #12141a;
+  --color-gunmetal: #1a1d25;
+  --color-steel: #282c35;
+  --color-graphite: #3a3f4b;
+  --color-ash: #88909e;
+  --color-chalk: #d1d5db;
+  --color-frost: #f0f0f2;
+  --color-paper: #F5F5F7;
+  
+  --color-amber: #FF9900;
+  --color-cobalt: #2563EB;
+  --color-cyan: #06B6D4;
+  --color-verified: #22C55E;
+  --color-kill: #EF4444;
+
   --grid-gap-sm: 0.5rem;
   --grid-gap-md: 1rem;
   --grid-gap-lg: 2rem;
   --grid-gap-xl: 4rem;
+
+  color-scheme: dark;
+}
+
+/* === LIGHT TACTICAL PALETTE === */
+[data-theme="light"], .light {
+  --color-obsidian: #f6f8fa;
+  --color-bunker: #ffffff;
+  --color-gunmetal: #edf2f7;
+  --color-steel: #e2e8f0;
+  --color-graphite: #cbd5e1;
+  --color-ash: #64748b;
+  --color-chalk: #334155;
+  --color-frost: #090d16;
+  --color-paper: #ffffff;
+  
+  --color-amber: #d97706;
+  --color-cobalt: #2563EB;
+  --color-cyan: #0891b2;
+  --color-verified: #16a34a;
+  --color-kill: #dc2626;
+
+  color-scheme: light;
+}
+
+/* === EXPLICIT DARK THEME === */
+[data-theme="dark"], .dark {
+  --color-obsidian: #0b0d10;
+  --color-bunker: #12141a;
+  --color-gunmetal: #1a1d25;
+  --color-steel: #282c35;
+  --color-graphite: #3a3f4b;
+  --color-ash: #88909e;
+  --color-chalk: #d1d5db;
+  --color-frost: #f0f0f2;
+  --color-paper: #F5F5F7;
+  
+  --color-amber: #FF9900;
+  --color-cobalt: #2563EB;
+  --color-cyan: #06B6D4;
+  --color-verified: #22C55E;
+  --color-kill: #EF4444;
+
+  color-scheme: dark;
+}
+
+/* Smooth transition during theme toggle */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease !important;
 }
 
 html, body {
@@ -38,6 +107,35 @@ html, body {
   letter-spacing: -0.015em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure high contrast dark text on amber buttons and badges in light mode */
+[data-theme="light"] .text-obsidian,
+.light .text-obsidian {
+  color: #0b0d10 !important;
+}
+
+/* Backdrop overlay adjustments for light theme */
+[data-theme="light"] .fixed.inset-0.bg-obsidian\/80,
+[data-theme="light"] .fixed.inset-0.bg-obsidian\/85,
+[data-theme="light"] .fixed.inset-0.bg-obsidian\/90 {
+  background-color: rgba(15, 23, 42, 0.45);
+}
+
+/* Theme Toggle Instant Icon Visibility (Zero Hydration Mismatch) */
+.theme-toggle-sun {
+  display: block;
+}
+.theme-toggle-moon {
+  display: none;
+}
+[data-theme="light"] .theme-toggle-sun,
+.light .theme-toggle-sun {
+  display: none;
+}
+[data-theme="light"] .theme-toggle-moon,
+.light .theme-toggle-moon {
+  display: block;
 }
 
 /* Custom Scrollbar */
@@ -62,8 +160,9 @@ html, body {
 .grid-overlay {
   background-size: 40px 40px;
   background-image: 
-    repeating-linear-gradient(to right, var(--color-gunmetal) 0, var(--color-gunmetal) 1px, transparent 1px, transparent 40px),
-    repeating-linear-gradient(to bottom, var(--color-gunmetal) 0, var(--color-gunmetal) 1px, transparent 1px, transparent 40px);
+    repeating-linear-gradient(to right, var(--color-steel) 0, var(--color-steel) 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(to bottom, var(--color-steel) 0, var(--color-steel) 1px, transparent 1px, transparent 40px);
+  opacity: 0.5;
 }
 
 /* Section Label */
@@ -93,7 +192,7 @@ html, body {
 /* Selection Colors */
 ::selection {
   background-color: var(--color-amber);
-  color: var(--color-obsidian);
+  color: #0b0d10;
 }
 
 /* Tactical Border */
