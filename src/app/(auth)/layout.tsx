@@ -1,3 +1,5 @@
+import { ThemeToggle } from '@/components/ui/theme-toggle';
+
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-obsidian min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -7,6 +9,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       {/* Section coordinate label */}
       <div className="absolute top-6 left-6 font-mono text-[10px] tracking-[0.2em] text-ash/50">
         AUTH // SECURE_GATEWAY
+      </div>
+
+      <div className="absolute top-6 right-6">
+        <ThemeToggle size="sm" />
       </div>
 
       <div className="relative z-10 w-full max-w-md px-4">
