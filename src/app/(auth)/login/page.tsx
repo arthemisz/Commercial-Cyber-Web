@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
@@ -34,9 +35,18 @@ export default function LoginPage() {
 
   return (
     <div className="bg-bunker border border-steel flex flex-col shadow-2xl relative">
-      <div className="p-8 pb-6 border-b border-steel">
-        <h1 className="font-mono font-bold tracking-[0.2em] text-frost text-2xl mb-1">CYBERTHINK</h1>
-        <p className="text-[10px] font-mono text-ash tracking-wider">SECURE ACCESS TERMINAL</p>
+      <div className="p-8 pb-6 border-b border-steel flex items-center gap-3.5">
+        <Image
+          src="/Logo.svg"
+          alt="Cyberthink Solutions"
+          width={44}
+          height={44}
+          className="w-11 h-11 object-contain shrink-0"
+        />
+        <div>
+          <h1 className="font-mono font-bold tracking-[0.2em] text-frost text-2xl mb-0.5">CYBERTHINK</h1>
+          <p className="text-[10px] font-mono text-ash tracking-wider">SECURE ACCESS TERMINAL</p>
+        </div>
       </div>
 
       <div className="p-8">
