@@ -16,6 +16,14 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'Cyberthink Solutions',
   description: 'Offensive Security Operations Platform',
+  icons: {
+    icon: [
+      { url: '/analyst-luxury.svg', type: 'image/svg+xml' },
+      { url: '/icon.png', type: 'image/png', sizes: '32x32' },
+    ],
+    shortcut: '/analyst-luxury.svg',
+    apple: '/analyst-luxury.svg',
+  },
 };
 
 const themeScript = `
@@ -44,6 +52,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
+        <link rel="icon" href="/analyst-luxury.svg" type="image/svg+xml" sizes="any" />
+        <link rel="shortcut icon" href="/analyst-luxury.svg" />
+        <link rel="apple-touch-icon" href="/analyst-luxury.svg" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="antialiased">
