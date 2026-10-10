@@ -7,16 +7,16 @@ import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { HireModal } from '@/components/public/hire-modal';
 
 export function PublicHeader() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { label: 'Architecture', href: '/#architecture', active: false },
-    { label: 'Operations', href: '/operations', active: pathname === '/operations' },
-    { label: 'Compliance', href: '/compliance', active: pathname === '/compliance' },
-    { label: 'Escrow', href: '/escrow', active: pathname === '/escrow' },
+    { label: 'How It Works', href: '/#how-it-works', active: false },
+    { label: 'Our Experts', href: '/#experts', active: false },
+    { label: 'Contact', href: 'mailto:dispatch@cyberthink.io', active: false },
   ];
 
   return (
@@ -65,18 +65,11 @@ export function PublicHeader() {
       <div className="flex items-center gap-3">
         <ThemeToggle size="sm" />
 
-        <Link
-          href="/consultant/onboard"
-          className="hidden sm:inline-block border border-steel text-ash hover:border-amber hover:text-amber text-[11px] font-mono px-3 py-1.5 transition-colors uppercase tracking-wider"
-        >
-          Apply as Consultant
-        </Link>
-        <Link
-          href="/client/engagements"
-          className="bg-amber text-obsidian font-mono text-[11px] font-semibold px-4 py-1.5 hover:bg-frost transition-colors uppercase tracking-wider"
-        >
-          Enter Console →
-        </Link>
+        <HireModal>
+          <span className="bg-amber text-obsidian font-mono text-[11px] font-semibold px-4 py-1.5 hover:bg-frost transition-colors uppercase tracking-wider cursor-pointer">
+            HIRE AN EXPERT →
+          </span>
+        </HireModal>
 
         {/* Mobile menu button */}
         <button
@@ -115,20 +108,11 @@ export function PublicHeader() {
           </div>
 
           <div className="pt-2 border-t border-steel flex flex-col gap-2">
-            <Link
-              href="/consultant/onboard"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-center border border-steel text-ash hover:text-amber py-2 text-xs font-mono uppercase tracking-wider transition-colors"
-            >
-              Apply as Consultant
-            </Link>
-            <Link
-              href="/client/engagements"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-center bg-amber text-obsidian font-semibold py-2 text-xs font-mono uppercase tracking-wider hover:bg-frost transition-colors"
-            >
-              Enter Console →
-            </Link>
+            <HireModal>
+              <span className="text-center bg-amber text-obsidian font-semibold py-2 text-xs font-mono uppercase tracking-wider hover:bg-frost transition-colors cursor-pointer block w-full">
+                HIRE AN EXPERT →
+              </span>
+            </HireModal>
           </div>
         </div>
       )}
