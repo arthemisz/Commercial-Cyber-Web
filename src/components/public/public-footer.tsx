@@ -21,7 +21,7 @@ export function PublicFooter() {
               </span>
             </div>
             <p className="text-xs text-ash font-mono max-w-sm leading-relaxed mt-2">
-              High-assurance offensive security operations. Dual-signed cryptographic RoE, real-time emergency kill switches, and milestone-backed escrow architectures.
+              Connecting enterprises with vetted cybersecurity specialists. Submit a hiring request and let our expert team find the perfect match from our network of 100+ professionals.
             </p>
           </div>
           <div className="mt-6 text-[10px] text-ash/60 font-mono">
@@ -31,59 +31,50 @@ export function PublicFooter() {
 
         <div className="flex flex-col gap-3 font-mono">
           <h4 className="text-[10px] text-ash uppercase tracking-wider mb-1 font-semibold">
-            OPERATIONS
+            PLATFORM
           </h4>
-          <Link href="/operations" className="text-[11px] text-ash hover:text-amber transition-colors">
-            Operational Protocol
+          <Link href="/#how-it-works" className="text-[11px] text-ash hover:text-amber transition-colors">
+            How It Works
           </Link>
-          <Link href="/operations#kill-switch" className="text-[11px] text-ash hover:text-amber transition-colors">
-            Kill Switch Engine
+          <Link href="/#experts" className="text-[11px] text-ash hover:text-amber transition-colors">
+            Our Expert Network
           </Link>
-          <Link href="/operations#scope-bounding" className="text-[11px] text-ash hover:text-amber transition-colors">
-            Scope Bounding (RoE)
-          </Link>
-          <Link href="/client/engagements" className="text-[11px] text-ash hover:text-amber transition-colors">
-            Authorized Scopes
+          <Link href="/#hire" className="text-[11px] text-ash hover:text-amber transition-colors">
+            Submit a Request
           </Link>
         </div>
 
         <div className="flex flex-col gap-3 font-mono">
           <h4 className="text-[10px] text-ash uppercase tracking-wider mb-1 font-semibold">
-            COMPLIANCE
+            EXPERTISE AREAS
           </h4>
-          <Link href="/compliance" className="text-[11px] text-ash hover:text-amber transition-colors">
-            GRC & Compliance Directives
-          </Link>
-          <Link href="/compliance#frameworks" className="text-[11px] text-ash hover:text-amber transition-colors">
-            SOC 2 / ISO 27001 Mapping
-          </Link>
-          <Link href="/compliance#worm-audit" className="text-[11px] text-ash hover:text-amber transition-colors">
-            RFC 3161 WORM Ledger
-          </Link>
-          <Link href="/compliance#sarif" className="text-[11px] text-ash hover:text-amber transition-colors">
-            SARIF 2.1.0 Telemetry
-          </Link>
+          <span className="text-[11px] text-ash">
+            Penetration Testing
+          </span>
+          <span className="text-[11px] text-ash">
+            Cloud Security
+          </span>
+          <span className="text-[11px] text-ash">
+            Compliance & Auditing
+          </span>
+          <span className="text-[11px] text-ash">
+            Incident Response
+          </span>
         </div>
 
         <div className="flex flex-col gap-3 font-mono">
           <h4 className="text-[10px] text-ash uppercase tracking-wider mb-1 font-semibold">
-            ESCROW & ACCESS
+            CONTACT
           </h4>
-          <Link href="/escrow" className="text-[11px] text-ash hover:text-amber transition-colors">
-            Milestone Escrow Architecture
-          </Link>
-          <Link href="/escrow#calculator" className="text-[11px] text-ash hover:text-amber transition-colors">
-            Disbursal Calculator
-          </Link>
-          <Link href="/login" className="text-[11px] text-ash hover:text-amber transition-colors">
-            Client Login
-          </Link>
-          <Link href="/consultant" className="text-[11px] text-ash hover:text-amber transition-colors">
-            Consultant Portal
-          </Link>
           <a href="mailto:dispatch@cyberthink.io" className="text-[11px] text-ash hover:text-amber transition-colors">
-            Contact Dispatch
+            Email Us
           </a>
+          <Link href="#" className="text-[11px] text-ash hover:text-amber transition-colors">
+            LinkedIn
+          </Link>
+          <Link href="#" className="text-[11px] text-ash hover:text-amber transition-colors">
+            Twitter / X
+          </Link>
         </div>
       </div>
 
@@ -91,15 +82,10 @@ export function PublicFooter() {
         <div className="flex items-center gap-4">
           <ThemeToggle variant="segmented" />
           <span className="hidden sm:inline-block">|</span>
-          <span>BUILD v2.4.11-stable</span>
-          <span className="hidden sm:inline-block">|</span>
-          <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 bg-verified"></span>
-            <span>SECURE ESCROW & TELEMETRY LIVE</span>
-          </div>
+          <span>TRUSTED BY 50+ ENTERPRISES</span>
         </div>
         <span>
-          ENCRYPTION: AES-256-GCM · WAL SYNC: SUB-100MS · MULTI-SIG: STRIPE CONNECT
+          100+ EXPERTS · 25+ DOMAINS · 98% SATISFACTION
         </span>
       </div>
     </footer>
